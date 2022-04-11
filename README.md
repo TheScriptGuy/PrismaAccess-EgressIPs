@@ -17,7 +17,7 @@ optional arguments:
 
 Example output:
 ```
-Location            	serviceType       	egress IP           Active/Reserved
+Location              serviceType         egress IP           Active/Reserved
 Singapore             gp_gateway          123.234.123.124     active
 Thailand              gp_gateway          119.256.139.101     active
 Vietnam               gp_gateway          191.199.280.100     active
