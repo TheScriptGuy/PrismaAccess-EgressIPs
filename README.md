@@ -1,7 +1,9 @@
 # PrismaAccess-EgressIPs
 Provide the egress IPs for the Prisma Access service in a formatted context
 
-By default the file the script looks for is egress-ips.json
+By default the file the script looks for is `egress-ips.json`.
+
+I've only tested this with Mobile Users.
 
 ```bash
 $ python3 format-egress-ips.py -h
