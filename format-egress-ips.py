@@ -35,10 +35,10 @@ def main():
             egressIps = json.load(f)
 
             # Print Headers
-            print('{: <20}\t{: <18}\t{: <18}'.format("Location", "serviceType", "egress IP"))
+            print('{: <20}\t{: <18}\t{: <18}\t{: <18}'.format("Location", "serviceType", "egress IP", "Active/Reserved"))
             for objEgressIps in egressIps["result"]:
                 for obj in objEgressIps["address_details"]:
-                    print('{: <20}\t{: <18}\t{: <18}'.format(objEgressIps["zone"], obj["serviceType"], obj["address"] ))
+                    print('{: <20}\t{: <18}\t{: <18}\t{: <18}'.format(objEgressIps["zone"], obj["serviceType"], obj["address"], obj["addressType"] ))
 
 
 if __name__ == '__main__':
