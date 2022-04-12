@@ -7,13 +7,14 @@ I've only tested this with Mobile Users.
 
 ```bash
 $ python3 format-egress-ips.py -h
-usage: format-egress-ips.py [-h] [--fileName FILENAME]
+usage: format-egress-ips.py [-h] [--fileName FILENAME] [--csv CSV]
 
-Format Egress IPs 0.01
+Format Egress IPs 0.02
 
 optional arguments:
   -h, --help           show this help message and exit
   --fileName FILENAME  List of json formatted egress IPs
+  --csv CSV            Convert the json formatted egress IPs into comma separate values (CSV). Does not display formatted table.
 ```
 
 
