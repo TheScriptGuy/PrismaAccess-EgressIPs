@@ -60,7 +60,8 @@ $ python3 format-egress-ips.py --deleteAPIKey
 Success
 ```
 
-# To get Egress IPs
+# Egress IPs
+## To get Egress IPs
 First make sure API key is set (see above)
 Use the `--allEgressIps` command.
 ```bash
@@ -72,20 +73,17 @@ Vietnam               gp_gateway          191.199.280.100     active
 US Central            gp_gateway          103.191.878.100     active
 ```
 
-
-## Convert an existing json file into a formatted table:
+## Convert egress IPs into comma separated values (csv) format
+No output is displayed, but a file is created based on the argument supplied through --outputCsvFile
 ```bash
-$ python3 format-egress-ips.py -h
-usage: format-egress-ips.py [-h] [--fileName FILENAME] [--csv CSV]
-
-Format Egress IPs 0.02
-
-optional arguments:
-  -h, --help           show this help message and exit
-  --fileName FILENAME  List of json formatted egress IPs
-  --csv CSV            Convert the json formatted egress IPs into comma separate values (CSV). Does not display formatted table.
+$ python3 format-egress-ips.py --allEgressIps --outputCsvFile output.csv
 ```
 
+
+## Convert an existing json file into a formatted table
+```bash
+$ python3 format-egress-ips.py --fileName egress-ips.json
+```
 
 Example output:
 ```
@@ -94,4 +92,9 @@ Singapore             gp_gateway          123.234.123.124     active
 Thailand              gp_gateway          119.256.139.101     active
 Vietnam               gp_gateway          191.199.280.100     active
 US Central            gp_gateway          103.191.878.100     active
+```
+
+## Convert an existing json file into a csv file
+```bash
+$ python3 format-egress-ips.py --fileName egress-ips.json --csv output.csv
 ```
