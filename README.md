@@ -1,10 +1,79 @@
 # PrismaAccess-EgressIPs
 Provide the egress IPs for the Prisma Access service in a formatted context
 
-By default the file the script looks for is `egress-ips.json`.
+# Help output
+```bash
+$ python3 format-egress-ips.py
+usage: format-egress-ips.py [-h] [--fileName FILENAME] [--csv CSV] [--setAPIKey SETAPIKEY] [--showAPIKey] [--deleteAPIKey] [--allEgressIPs]
+                            [--allAROnboardedMobileUserLocations] [--allActiveIPOnboardedMobileUserLocations] [--allActiveMobileUserAddresses]
+                            [--allRemoteNetworkAddresses] [--allCleanPipeAddresses] [--allExplicitProxyAddresses] [--outputJsonFile OUTPUTJSONFILE]
+                            [--outputCsvFile OUTPUTCSVFILE]
 
-I've only tested this with Mobile Users.
+Format Egress IPs 0.03
 
+optional arguments:
+  -h, --help            show this help message and exit
+  --fileName FILENAME   List of json formatted egress IPs
+  --csv CSV             Convert the json formatted egress IPs into comma separate values (CSV). Does not display formatted table.
+  --setAPIKey SETAPIKEY
+                        Sets the API key into prisma-access-api.key file
+  --showAPIKey          Shows the Prisma Access API Key from the prisma-access-api.key file.
+  --deleteAPIKey        Deletes the Prisma Access API Key from prisma-access-api.key file.
+  --allEgressIPs        Shows all egress IPs for Prisma Access Service
+  --allAROnboardedMobileUserLocations
+                        Retrieve all the active/reserved IP addresses for Mobile User Locations
+  --allActiveIPOnboardedMobileUserLocations
+                        Retrieve all the active Mobile Users IP addresses
+  --allActiveMobileUserAddresses
+                        Shows all Active Mobile User Addresses
+  --allRemoteNetworkAddresses
+                        Shows all Remote Network Addresses
+  --allCleanPipeAddresses
+                        Shows all Clean Pipe Addresses
+  --allExplicitProxyAddresses
+                        Shows all Clean Pipe Addresses
+  --outputJsonFile OUTPUTJSONFILE
+                        Send json output to file.
+  --outputCsvFile OUTPUTCSVFILE
+                        Convert json output into comma separated values file.
+```
+
+# API Keys
+## To set API Key
+Creates the file prisma-access-api.key and adds the API key into it.
+
+```bash
+$ python3 format-egress-ips.py --setAPIKey this_is_my_api_key
+Success
+$
+```
+
+## To show the API key:
+```bash
+$ python3 format-egress-ips.py --showAPIKey
+this_is_my_api_key
+```
+
+## To delete the API key:
+```bash
+$ python3 format-egress-ips.py --deleteAPIKey
+Success
+```
+
+# To get Egress IPs
+First make sure API key is set (see above)
+Use the `--allEgressIps` command.
+```bash
+$ python3 format-egress-ips.py --allEgressIps
+Location              serviceType         egress IP           Active/Reserved
+Singapore             gp_gateway          123.234.123.124     active
+Thailand              gp_gateway          119.256.139.101     active
+Vietnam               gp_gateway          191.199.280.100     active
+US Central            gp_gateway          103.191.878.100     active
+```
+
+
+## Convert an existing json file into a formatted table:
 ```bash
 $ python3 format-egress-ips.py -h
 usage: format-egress-ips.py [-h] [--fileName FILENAME] [--csv CSV]
