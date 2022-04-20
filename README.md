@@ -1,6 +1,12 @@
 # PrismaAccess-EgressIPs
 Provide the egress IPs for the Prisma Access service in a formatted context
 
+# Install
+Make sure that you have python's request module installed
+```bash
+$ pip3 install requests
+```
+
 # Help output
 ```bash
 $ python3 format-egress-ips.py
