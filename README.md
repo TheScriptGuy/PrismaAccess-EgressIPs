@@ -1,8 +1,8 @@
 # PrismaAccess-EgressIPs
 Provide the egress IPs for the Prisma Access service in a formatted context
 
-# Install
-Make sure that you have python's request module installed
+# Dependencies
+Make sure that you have python's `requests` module installed
 ```bash
 $ pip3 install requests
 ```
