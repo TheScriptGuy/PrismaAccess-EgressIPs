@@ -63,9 +63,9 @@ Success
 # Egress IPs
 ## To get Egress IPs
 First make sure API key is set (see above)
-Use the `--allEgressIps` command.
+Use the `--allEgressIPs` command.
 ```bash
-$ python3 format-egress-ips.py --allEgressIps
+$ python3 format-egress-ips.py --allEgressIPs
 Location              serviceType         egress IP           Active/Reserved
 Singapore             gp_gateway          123.234.123.124     active
 Thailand              gp_gateway          119.256.139.101     active
