@@ -76,7 +76,7 @@ US Central            gp_gateway          103.191.878.100     active
 ## Convert egress IPs into comma separated values (csv) format
 No output is displayed, but a file is created based on the argument supplied through --outputCsvFile
 ```bash
-$ python3 format-egress-ips.py --allEgressIps --outputCsvFile output.csv
+$ python3 format-egress-ips.py --allEgressIPs --outputCsvFile output.csv
 ```
 
 
