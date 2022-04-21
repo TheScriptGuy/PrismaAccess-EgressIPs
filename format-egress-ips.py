@@ -20,7 +20,7 @@ PrismaAccessHeaders = { "header-api-key": "" }
 
 API_KEY_FILE = 'prisma-access-api.key'
 
-getPrismaAccessURI ='https://api.lab.datapath.prismaaccess.com/getPrismaAccessIP/v2'
+getPrismaAccessURI ='https://api.data.datapath.prismaaccess.com/getPrismaAccessIP/v2'
 
 
 # All Public IP addresses
