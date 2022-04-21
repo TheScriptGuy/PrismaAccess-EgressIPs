@@ -1,5 +1,5 @@
 # PrismaAccess-EgressIPs
-Provide the egress IPs for the Prisma Access service in a formatted context
+Provide the egress IPs for the Prisma Access service in a formatted context.
 
 # Dependencies
 Make sure that you have python's `requests` module installed
@@ -8,9 +8,22 @@ $ pip3 install requests
 ```
 
 # Help output
+If no arguments are specified, the script will not run. The last order of evaluation is checking to see if the --fileName argument has been set/
+
+The logic is such that it follows this order:
+1. If no arguments are supplied, exit script.
+2. If one of the --all* arguments are supplied, check to see if the API Key exists. 
+- No API key, exit script. 
+- API key exists, then attempt to get the egress IPs based based on argument supplied. 
+3. If egress IPs are returned from the API, then display them in tabulated format to stdout. Exit script.
+4. If egress IPs are returned from the API, and the outputJsonFile **or** outputCsvFile argument is specified, then send the resulting output to those files in the appropriate format. Exit script.
+5. If the --fileName argument is used, then display the output to stdout in tabulated format.
+6. If the --fileName arguement and the --outputCsvFile arguments are used in tandem, then the json formatted file is converted to comma separated values.
+
+
 ```bash
 $ python3 format-egress-ips.py
-usage: format-egress-ips.py [-h] [--fileName FILENAME] [--csv CSV] [--setAPIKey SETAPIKEY] [--showAPIKey] [--deleteAPIKey] [--allEgressIPs]
+usage: format-egress-ips.py [-h] [--fileName FILENAME] [--setAPIKey SETAPIKEY] [--showAPIKey] [--deleteAPIKey] [--allEgressIPs]
                             [--allAROnboardedMobileUserLocations] [--allActiveIPOnboardedMobileUserLocations] [--allActiveMobileUserAddresses]
                             [--allRemoteNetworkAddresses] [--allCleanPipeAddresses] [--allExplicitProxyAddresses] [--outputJsonFile OUTPUTJSONFILE]
                             [--outputCsvFile OUTPUTCSVFILE]
@@ -20,7 +33,6 @@ Format Egress IPs 0.04
 optional arguments:
   -h, --help            show this help message and exit
   --fileName FILENAME   List of json formatted egress IPs
-  --csv CSV             Convert the json formatted egress IPs into comma separate values (CSV). Does not display formatted table.
   --setAPIKey SETAPIKEY
                         Sets the API key into prisma-access-api.key file
   --showAPIKey          Shows the Prisma Access API Key from the prisma-access-api.key file.
