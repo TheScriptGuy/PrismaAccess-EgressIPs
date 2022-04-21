@@ -15,7 +15,7 @@ usage: format-egress-ips.py [-h] [--fileName FILENAME] [--csv CSV] [--setAPIKey 
                             [--allRemoteNetworkAddresses] [--allCleanPipeAddresses] [--allExplicitProxyAddresses] [--outputJsonFile OUTPUTJSONFILE]
                             [--outputCsvFile OUTPUTCSVFILE]
 
-Format Egress IPs 0.03
+Format Egress IPs 0.04
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -45,9 +45,9 @@ optional arguments:
 ```
 
 # API Keys
-* To get the API key:
-** [Panorama](https://docs.paloaltonetworks.com/prisma/prisma-access/preferred/2-2/prisma-access-panorama-admin/prisma-access-overview/retrieve-ip-addresses-for-prisma-access)
-** [Cloud Managed](https://docs.paloaltonetworks.com/prisma/prisma-access/prisma-access-cloud-managed-admin/prisma-access-service-infrastructure/retrieve-ip-addresses-to-allow-for-prisma-access)
+- To get the API key:
+  - [Panorama](https://docs.paloaltonetworks.com/prisma/prisma-access/preferred/2-2/prisma-access-panorama-admin/prisma-access-overview/retrieve-ip-addresses-for-prisma-access)
+  - [Cloud Managed](https://docs.paloaltonetworks.com/prisma/prisma-access/prisma-access-cloud-managed-admin/prisma-access-service-infrastructure/retrieve-ip-addresses-to-allow-for-prisma-access)
 
 ## To set API Key
 Creates the file prisma-access-api.key and adds the API key into it.
