@@ -334,12 +334,11 @@ def main():
     if args.allEgressIPs or args.allAROnboardedMobileUserLocations or args.allActiveMobileUserAddresses or args.allRemoteNetworkAddresses or args.allCleanPipeAddresses or args.allExplicitProxyAddresses:
         apiQueryArguments()
 
-    # If the --csv argument isn't specified, the script will
-    # display a formatted table of the json object.
     if args.fileName:
         # If the --fileName argument is specified, the script will
         # import the json object in the file.
         myEgressIps = getJsonObject(args.fileName)
+
         if args.outputCsvFile:
             # Convert json into csv format.
             jsonConvert2Csv(args.outputCsvFile, myEgressIps)
