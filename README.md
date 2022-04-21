@@ -16,9 +16,10 @@ The logic is such that it follows this order:
 - No API key, exit script. 
 - API key exists, then attempt to get the egress IPs based based on argument supplied. 
 3. If egress IPs are returned from the API, then display them in tabulated format to stdout. Exit script.
-4. If egress IPs are returned from the API, and the outputJsonFile **or** outputCsvFile argument is specified, then send the resulting output to those files in the appropriate format. Exit script.
-5. If the --fileName argument is used, then display the output to stdout in tabulated format.
-6. If the --fileName arguement and the --outputCsvFile arguments are used in tandem, then the json formatted file is converted to comma separated values.
+4. If egress IPs are returned from the API, and the `--outputJsonFile` **or** `--outputCsvFile` argument is specified, then send the resulting output to those files in the appropriate format. Exit script.
+5. For these 2 options below, the API key does not need to be set.
+6. If the `--fileName` argument is used, then display the output to stdout in tabulated format.
+7. If the `--fileName` arguement and the `--outputCsvFile` arguments are used in tandem, then the json formatted file is converted to comma separated values.
 
 
 ```bash
@@ -118,5 +119,5 @@ US Central            gp_gateway          103.191.878.100     active
 
 ## Convert an existing json file into a csv file
 ```bash
-$ python3 format-egress-ips.py --fileName egress-ips.json --csv output.csv
+$ python3 format-egress-ips.py --fileName egress-ips.json --outputCsvFile output.csv
 ```
