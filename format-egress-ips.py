@@ -1,10 +1,9 @@
 # Formats the json output to get all the egress IPs
 # Author:          TheScriptGuy
 # Last modified:   2022-04-20
-# Version:         0.03
+# Version:         0.04
 # Changelog:
-#   Added ability to query API to get IP addresses from Prisma Access.
-#   Added API key management arguments.
+#   Minor change to csv arguments.
 
 import sys
 import json
@@ -15,13 +14,13 @@ import requests
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
 
-scriptVersion = "0.03"
+scriptVersion = "0.04"
 
 PrismaAccessHeaders = { "header-api-key": "" } 
 
 API_KEY_FILE = 'prisma-access-api.key'
 
-getPrismaAccessURI ='https://api.prod.datapath.prismaaccess.com/getPrismaAccessIP/v2'
+getPrismaAccessURI ='https://api.lab.datapath.prismaaccess.com/getPrismaAccessIP/v2'
 
 
 # All Public IP addresses
@@ -54,9 +53,6 @@ def parseArguments():
     parser.add_argument('--fileName', default='',
                         help='List of json formatted egress IPs')
     
-    parser.add_argument('--csv', default='',
-                        help='Convert the json formatted egress IPs into comma separate values (CSV). Does not display formatted table.') 
-
     parser.add_argument('--setAPIKey', default='',
                         help='Sets the API key into prisma-access-api.key file')
 
@@ -312,14 +308,7 @@ def apiArguments():
         delAPIKey()
         sys.exit(0)
 
-
-def main():
-    # Parse all the arguments for the script
-    parseArguments()
-
-    # Check to see if the API arguments are defined.
-    apiArguments()
-
+def apiQueryArguments():
     # Check to see if the API Key file is defined.
     API_KEY = getAPIKey()
     PrismaAccessHeaders = { "header-api-key": API_KEY } 
@@ -334,23 +323,37 @@ def main():
     argsCleanPipe(PrismaAccessHeaders)
     argsExplicitProxy(PrismaAccessHeaders)
 
-    # If the --fileName argument is specified, the script will
-    # import the json object in the file.
-    myEgressIps = getJsonObject(args.fileName)
+
+def main():
+    # Parse all the arguments for the script
+    parseArguments()
+
+    # Check to see if the API arguments are defined.
+    apiArguments()
+
+    if args.allEgressIPs or args.allAROnboardedMobileUserLocations or args.allActiveMobileUserAddresses or args.allRemoteNetworkAddresses or args.allCleanPipeAddresses or args.allExplicitProxyAddresses:
+        apiQueryArguments()
+
 
     # If the --csv argument is specified, it'll convert 
     # the --fileName json object to CSV format
-    if args.csv:
-        # Convert json into csv format.
-        jsonConvert2Csv(args.csv, myEgressIps)
-        sys.exit(0)
+
 
     # If the --csv argument isn't specified, the script will
     # display a formatted table of the json object.
     if args.fileName:
+        # If the --fileName argument is specified, the script will
+        # import the json object in the file.
+        myEgressIps = getJsonObject(args.fileName)
+        if args.outputCsvFile:
+            # Convert json into csv format.
+            jsonConvert2Csv(args.outputCsvFile, myEgressIps)
+            sys.exit(0)
+
+        # By default print the json object in tabulated form.
         printJsonObject(myEgressIps)
         sys.exit(0)
-        
+
 
 if __name__ == '__main__':
     try:
