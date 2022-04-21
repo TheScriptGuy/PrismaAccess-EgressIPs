@@ -81,6 +81,7 @@ this_is_my_api_key
 ```bash
 $ python3 format-egress-ips.py --deleteAPIKey
 Success
+$ 
 ```
 
 # Egress IPs
