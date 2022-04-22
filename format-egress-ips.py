@@ -1,6 +1,6 @@
 # Formats the json output to get all the egress IPs
 # Author:          TheScriptGuy
-# Last modified:   2022-04-21
+# Last modified:   2022-04-22
 # Version:         0.05
 # Changelog:
 #   Added better handling for URL requests.
