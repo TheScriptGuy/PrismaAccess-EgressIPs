@@ -1,9 +1,10 @@
 # Formats the json output to get all the egress IPs
 # Author:          TheScriptGuy
 # Last modified:   2022-04-21
-# Version:         0.04
+# Version:         0.05
 # Changelog:
-#   Minor change to csv arguments.
+#   Added better handling for URL requests.
+#   Fixed bug with prod URL.
 
 import sys
 import json
@@ -14,13 +15,13 @@ import requests
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
 
-scriptVersion = "0.04"
+scriptVersion = "0.05"
 
 PrismaAccessHeaders = { "header-api-key": "" } 
 
 API_KEY_FILE = 'prisma-access-api.key'
 
-getPrismaAccessURI ='https://api.data.datapath.prismaaccess.com/getPrismaAccessIP/v2'
+getPrismaAccessURI ='https://api.prod.datapath.prismaaccess.com/getPrismaAccessIP/v2'
 
 
 # All Public IP addresses
@@ -51,7 +52,7 @@ def parseArguments():
 
     # Optional arguments
     parser.add_argument('--fileName', default='',
-                        help='List of json formatted egress IPs')
+                        help='List of json formatted egress IPs to convert.')
     
     parser.add_argument('--setAPIKey', default='',
                         help='Sets the API key into prisma-access-api.key file')
@@ -176,15 +177,31 @@ def getJsonObject(__jsonFile):
 
 def getJsonObjectFromUrl(__jsonurl, __uriheaders, __uribody):
     # Disable certificate checks when establishing a connection
+
     requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
-    # Json POST request
-    __jsonRequest = requests.post(__jsonurl,headers=__uriheaders,data=json.dumps(__uribody),verify=False)
+    try:
+    
 
-    # Convert result into a JSON object
-    __jsonObject = json.loads(__jsonRequest.text)
-    return __jsonObject
+        # Json POST request
+        __jsonRequest = requests.post(__jsonurl,headers=__uriheaders,data=json.dumps(__uribody),verify=False)
 
+        # Convert result into a JSON object
+        __jsonObject = json.loads(__jsonRequest.text)
+        return __jsonObject
+
+    except requests.exceptions.Timeout:
+        print('Timeout while retrieving URL.')
+        sys.exit(1)
+    except requests.exceptions.TooManyRedirects:
+        print('Too many redirects while accessing the URL')
+        sys.exit(1)
+    except requests.exceptions.ConnectionError as e:
+        print('Could not connect to URL - ' + __jsonurl + '\n')
+        sys.exit(1)
+    except urllib3.exceptions.MaxRetryError:
+        print('Maximum number of retries exceeded.')
+        sys.exit(1)
 
 def outputJsonFile(__jsonFileName,__jsonObject):
     # Write the JSON object into the __jsonFileName file.
