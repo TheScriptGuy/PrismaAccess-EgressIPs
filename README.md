@@ -24,20 +24,21 @@ The logic is such that it follows this order:
 
 ```bash
 $ python3 format-egress-ips.py
-usage: format-egress-ips.py [-h] [--fileName FILENAME] [--setAPIKey SETAPIKEY] [--showAPIKey] [--deleteAPIKey] [--allEgressIPs]
-                            [--allAROnboardedMobileUserLocations] [--allActiveIPOnboardedMobileUserLocations] [--allActiveMobileUserAddresses]
-                            [--allRemoteNetworkAddresses] [--allCleanPipeAddresses] [--allExplicitProxyAddresses] [--outputJsonFile OUTPUTJSONFILE]
-                            [--outputCsvFile OUTPUTCSVFILE]
+usage: format-egress-ips.py [-h] [--fileName FILENAME] [--setAPIKey SETAPIKEY] [--showAPIKey] [--deleteAPIKey] [--environment ENVIRONMENT] [--allEgressIPs]
+                            [--allAROnboardedMobileUserLocations] [--allActiveIPOnboardedMobileUserLocations] [--allActiveMobileUserAddresses] [--allRemoteNetworkAddresses]
+                            [--allCleanPipeAddresses] [--allExplicitProxyAddresses] [--outputJsonFile OUTPUTJSONFILE] [--outputCsvFile OUTPUTCSVFILE]
 
-Format Egress IPs 0.04
+Format Egress IPs 0.06
 
 optional arguments:
   -h, --help            show this help message and exit
-  --fileName FILENAME   List of json formatted egress IPs
+  --fileName FILENAME   List of json formatted egress IPs to convert.
   --setAPIKey SETAPIKEY
                         Sets the API key into prisma-access-api.key file
   --showAPIKey          Shows the Prisma Access API Key from the prisma-access-api.key file.
   --deleteAPIKey        Deletes the Prisma Access API Key from prisma-access-api.key file.
+  --environment ENVIRONMENT
+                        By default, script queries prod environment.
   --allEgressIPs        Shows all egress IPs for Prisma Access Service
   --allAROnboardedMobileUserLocations
                         Retrieve all the active/reserved IP addresses for Mobile User Locations
