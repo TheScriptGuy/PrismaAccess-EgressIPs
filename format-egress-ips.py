@@ -63,7 +63,7 @@ def parseArguments():
                         help='Deletes the Prisma Access API Key from prisma-access-api.key file.')
 
     parser.add_argument('--environment', default='prod',
-                        help='Shows all egress IPs for Prisma Access Service')
+                        help='By default, script queries prod environment.')
 
     parser.add_argument('--allEgressIPs', action='store_true',
                         help='Shows all egress IPs for Prisma Access Service')
