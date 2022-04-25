@@ -3,7 +3,7 @@
 # Last modified:   2022-04-25
 # Version:         0.06
 # Changelog:
-#   By default the script queries the 'prod' environment. Use the --environment variable to query another location.
+#   By default the script queries the 'prod' environment. Use the --environment variable to query another location
 
 import sys
 import json
@@ -347,6 +347,9 @@ def main():
     # Parse all the arguments for the script
     global getPrismaAccessURI
     parseArguments()
+
+    # Define the URL to query
+    getPrismaAccessURI = f'https://api.{args.environment}.datapath.prismaaccess.com/getPrismaAccessIP/v2'
 
     # Check to see if the API arguments are defined.
     apiArguments()
