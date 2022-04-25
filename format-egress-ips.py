@@ -1,10 +1,9 @@
 # Formats the json output to get all the egress IPs
 # Author:          TheScriptGuy
-# Last modified:   2022-04-22
-# Version:         0.05
+# Last modified:   2022-04-25
+# Version:         0.06
 # Changelog:
-#   Added better handling for URL requests.
-#   Fixed bug with prod URL.
+#   By default the script queries the 'prod' environment. Use the --environment variable to query another location.
 
 import sys
 import json
@@ -15,13 +14,13 @@ import requests
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
 
-scriptVersion = "0.05"
+scriptVersion = "0.06"
 
 PrismaAccessHeaders = { "header-api-key": "" } 
 
 API_KEY_FILE = 'prisma-access-api.key'
 
-getPrismaAccessURI ='https://api.prod.datapath.prismaaccess.com/getPrismaAccessIP/v2'
+getPrismaAccessURI =''
 
 
 # All Public IP addresses
@@ -62,6 +61,9 @@ def parseArguments():
 
     parser.add_argument('--deleteAPIKey', action='store_true',
                         help='Deletes the Prisma Access API Key from prisma-access-api.key file.')
+
+    parser.add_argument('--environment', default='prod',
+                        help='Shows all egress IPs for Prisma Access Service')
 
     parser.add_argument('--allEgressIPs', action='store_true',
                         help='Shows all egress IPs for Prisma Access Service')
@@ -343,6 +345,7 @@ def apiQueryArguments():
 
 def main():
     # Parse all the arguments for the script
+    global getPrismaAccessURI
     parseArguments()
 
     # Check to see if the API arguments are defined.
