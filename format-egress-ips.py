@@ -52,7 +52,7 @@ def parseArguments():
     # Optional arguments
     parser.add_argument('--fileName', default='',
                         help='List of json formatted egress IPs to convert.')
-    
+
     parser.add_argument('--setAPIKey', default='',
                         help='Sets the API key into prisma-access-api.key file')
 
@@ -183,7 +183,7 @@ def getJsonObjectFromUrl(__jsonurl, __uriheaders, __uribody):
     requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
     try:
-    
+
 
         # Json POST request
         __jsonRequest = requests.post(__jsonurl,headers=__uriheaders,data=json.dumps(__uribody),verify=False)
@@ -227,9 +227,9 @@ def checkArgsJsonCsv(__jsonObject):
 def showAllEgressIps(__PrismaAccessHeaders):
     # Shows all egress IPs used in the Prisma Access Service.
     __AllEgressIps = getJsonObjectFromUrl(getPrismaAccessURI,__PrismaAccessHeaders,EgressIPs)
-    
+
     checkArgsJsonCsv(__AllEgressIps)
-    
+
     # Only reaches this stage if the outputJsonFile or outputCsvFile is not defined.
     printJsonObject(__AllEgressIps)
 
@@ -238,7 +238,7 @@ def showAllActiveMobileUserAddresses(__PrismaAccessHeaders):
     __AllActiveMobileUserAddresses = getJsonObjectFromUrl(getPrismaAccessURI,__PrismaAccessHeaders,ActiveMobileUserAddresses)
 
     checkArgsJsonCsv(__AllActiveMobileUserAddresses)
-    
+
     # Only reaches this stage if the outputJsonFile or outputCsvFile is not defined.
     printJsonObject(__AllActiveMobileUserAddresses)
 
@@ -247,7 +247,7 @@ def showAllActiveReservedOnboardedMobileUserLocations(__PrismaAccessHeaders):
     __AllActiveReservedOnboardedMobileUserLocations = getJsonObjectFromUrl(getPrismaAccessURI,__PrismaAccessHeaders,ActiveReservedOnboardedMobileUserLocations)
 
     checkArgsJsonCsv(__AllActiveReservedOnboardedMobileUserLocations)
-    
+
     # Only reaches this stage if the outputJsonFile or outputCsvFile is not defined.
     printJsonObject(__AllActiveReservedOnboardedMobileUserLocations)
 
@@ -256,7 +256,7 @@ def showActiveIPOnboardedMobileUserLocations(__PrismaAccessHeaders):
     __ActiveIPOnboardedMobileUserLocations = getJsonObjectFromUrl(getPrismaAccessURI,__PrismaAccessHeaders,ActiveIPOnboardedMobileUserLocations)
 
     checkArgsJsonCsv(__ActiveIPOnboardedMobileUserLocations)
-    
+
     # Only reaches this stage if the outputJsonFile or outputCsvFile is not defined.
     printJsonObject(__ActiveIPOnboardedMobileUserLocations)
 
@@ -265,7 +265,7 @@ def showRemoteNetworkAddresses(__PrismaAccessHeaders):
     __RemoteNetworkAddresses = getJsonObjectFromUrl(getPrismaAccessURI,__PrismaAccessHeaders,RemoteNetworkAddresses)
 
     checkArgsJsonCsv(__RemoteNetworkAddresses)
-    
+
     # Only reaches this stage if the outputJsonFile or outputCsvFile is not defined.
     printJsonObject(__RemoteNetworkAddresses)
 
@@ -274,7 +274,7 @@ def showCleanPipeAddresses(__PrismaAccessHeaders):
     __CleanPipeAddresses = getJsonObjectFromUrl(getPrismaAccessURI,__PrismaAccessHeaders,CleanPipeAddresses)
 
     checkArgsJsonCsv(__CleanPipeAddresses)
-    
+
     # Only reaches this stage if the outputJsonFile or outputCsvFile is not defined.
     printJsonObject(__CleanPipeAddresses)
 
@@ -283,7 +283,7 @@ def showExplicitProxyAddresses(__PrismaAccessHeaders):
     __ExplicitProxyAddresses = getJsonObjectFromUrl(getPrismaAccessURI,__PrismaAccessHeaders,ExplicitProxyAddresses)
 
     checkArgsJsonCsv(__ExplicitProxyAddresses)
-    
+
     # Only reaches this stage if the outputJsonFile or outputCsvFile is not defined.
     printJsonObject(__ExplicitProxyAddresses)
 
@@ -374,7 +374,7 @@ def main():
 
 if __name__ == '__main__':
     try:
-        
+
         main()
 
     except KeyboardInterrupt:
