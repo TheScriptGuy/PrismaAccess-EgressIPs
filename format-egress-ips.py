@@ -16,7 +16,7 @@ from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
 scriptVersion = "0.07"
 
-PrismaAccessHeaders = { "header-api-key": "" } 
+PrismaAccessHeaders = {"header-api-key": ""}
 
 API_KEY_FILE = 'prisma-access-api.key'
 
@@ -24,21 +24,21 @@ getPrismaAccessURI =''
 
 
 # All Public IP addresses
-EgressIPs = { "serviceType": "all", "addrType": "all", "location": "all" }
+EgressIPs = {"serviceType": "all", "addrType": "all", "location": "all"}
 
 # Mobile Users IP Addresses
-ActiveReservedOnboardedMobileUserLocations = { "serviceType": "gp_gateway", "addrType": "all", "location": "deployed" }
-ActiveIPOnboardedMobileUserLocations = { "serviceType": "gp_gateway", "addrType": "active", "location": "deployed" }
-ActiveMobileUserAddresses = { "serviceType": "gp_gateway", "addrType": "all", "location": "all" }
+ActiveReservedOnboardedMobileUserLocations = {"serviceType": "gp_gateway", "addrType": "all", "location": "deployed"}
+ActiveIPOnboardedMobileUserLocations = {"serviceType": "gp_gateway", "addrType": "active", "location": "deployed"}
+ActiveMobileUserAddresses = {"serviceType": "gp_gateway", "addrType": "all", "location": "all"}
 
 # Remote Network IP addresses
-RemoteNetworkAddresses = { "serviceType": "remote_network", "addrType": "all", "location": "all" }
+RemoteNetworkAddresses = {"serviceType": "remote_network", "addrType": "all", "location": "all"}
 
 # Clean Pipe IP addresses
-CleanPipeAddresses = { "serviceType": "clean_pipe", "addrType": "all", "location": "all" }
+CleanPipeAddresses = {"serviceType": "clean_pipe", "addrType": "all", "location": "all"}
 
 # Explicit Proxy IP addresses
-ExplicitProxyAddresses = { "serviceType": "swg_proxy", "location": "deployed", "addrType": "auth_cache_service" }
+ExplicitProxyAddresses = {"serviceType": "swg_proxy", "location": "deployed", "addrType": "auth_cache_service"}
 
 def parseArguments():
     """
@@ -92,7 +92,7 @@ def parseArguments():
     parser.add_argument('--outputCsvFile', default='',
                         help='Convert json output into comma separated values file.')
 
-    global args    
+    global args
     args = parser.parse_args()
 
 def setAPIKey(__APIKey):
@@ -155,7 +155,7 @@ def printJsonObject(__jsonObject):
                 # Iterate through the json object and print accordingly.
                 for objEgressIps in __jsonObject["result"]:
                     for obj in objEgressIps["address_details"]:
-                        print('{: <20}{: <18}{: <18}{: <18}'.format(objEgressIps["zone"], obj["serviceType"], obj["address"], obj["addressType"] ))
+                        print('{: <20}{: <18}{: <18}{: <18}'.format(objEgressIps["zone"], obj["serviceType"], obj["address"], obj["addressType"]))
             else:
                 print(__jsonObject["result"])
                 sys.exit(1)
@@ -168,8 +168,8 @@ def printJsonObject(__jsonObject):
 
 def getJsonObject(__jsonFile):
     if not path.exists(__jsonFile):
-            print('I cannot find file ' + __jsonFile)
-            sys.exit(1)
+        print('I cannot find file ' + __jsonFile)
+        sys.exit(1)
     else:
         f = open(__jsonFile)
         egressIps = json.load(f)
@@ -186,7 +186,7 @@ def getJsonObjectFromUrl(__jsonurl, __uriheaders, __uribody):
 
 
         # Json POST request
-        __jsonRequest = requests.post(__jsonurl,headers=__uriheaders,data=json.dumps(__uribody),verify=False)
+        __jsonRequest = requests.post(__jsonurl, headers=__uriheaders, data=json.dumps(__uribody), verify=False)
 
         # Convert result into a JSON object
         __jsonObject = json.loads(__jsonRequest.text)
@@ -205,7 +205,7 @@ def getJsonObjectFromUrl(__jsonurl, __uriheaders, __uribody):
         print('Maximum number of retries exceeded.')
         sys.exit(1)
 
-def outputJsonFile(__jsonFileName,__jsonObject):
+def outputJsonFile(__jsonFileName, __jsonObject):
     # Write the JSON object into the __jsonFileName file.
     jsonFile = open(__jsonFileName, "w")
     jsonFile.write(json.dumps(__jsonObject))
@@ -216,17 +216,17 @@ def checkArgsJsonCsv(__jsonObject):
 
     if args.outputCsvFile:
         # Convert the Json object into CSV format.
-        jsonConvert2Csv(args.outputCsvFile,__jsonObject)
+        jsonConvert2Csv(args.outputCsvFile, __jsonObject)
         sys.exit(0)
 
     if args.outputJsonFile:
         # Write the Json object into json file.
-        outputJsonFile(args.outputJsonFile,__jsonObject)
+        outputJsonFile(args.outputJsonFile, __jsonObject)
         sys.exit(0)
 
 def showAllEgressIps(__PrismaAccessHeaders):
     # Shows all egress IPs used in the Prisma Access Service.
-    __AllEgressIps = getJsonObjectFromUrl(getPrismaAccessURI,__PrismaAccessHeaders,EgressIPs)
+    __AllEgressIps = getJsonObjectFromUrl(getPrismaAccessURI, __PrismaAccessHeaders,EgressIPs)
 
     checkArgsJsonCsv(__AllEgressIps)
 
@@ -235,7 +235,7 @@ def showAllEgressIps(__PrismaAccessHeaders):
 
 def showAllActiveMobileUserAddresses(__PrismaAccessHeaders):
     # Shows all Active Mobile User Addresses used in the Prisma Access Service.
-    __AllActiveMobileUserAddresses = getJsonObjectFromUrl(getPrismaAccessURI,__PrismaAccessHeaders,ActiveMobileUserAddresses)
+    __AllActiveMobileUserAddresses = getJsonObjectFromUrl(getPrismaAccessURI, __PrismaAccessHeaders, ActiveMobileUserAddresses)
 
     checkArgsJsonCsv(__AllActiveMobileUserAddresses)
 
@@ -244,7 +244,7 @@ def showAllActiveMobileUserAddresses(__PrismaAccessHeaders):
 
 def showAllActiveReservedOnboardedMobileUserLocations(__PrismaAccessHeaders):
     # Shows all Active/Reserved for Onboarded Mobile User Locations IPs used in the Prisma Access Service.
-    __AllActiveReservedOnboardedMobileUserLocations = getJsonObjectFromUrl(getPrismaAccessURI,__PrismaAccessHeaders,ActiveReservedOnboardedMobileUserLocations)
+    __AllActiveReservedOnboardedMobileUserLocations = getJsonObjectFromUrl(getPrismaAccessURI, __PrismaAccessHeaders, ActiveReservedOnboardedMobileUserLocations)
 
     checkArgsJsonCsv(__AllActiveReservedOnboardedMobileUserLocations)
 
@@ -253,7 +253,7 @@ def showAllActiveReservedOnboardedMobileUserLocations(__PrismaAccessHeaders):
 
 def showActiveIPOnboardedMobileUserLocations(__PrismaAccessHeaders):
     # Shows all Active for Onboarded Mobile User Locations IPs used in the Prisma Access Service.
-    __ActiveIPOnboardedMobileUserLocations = getJsonObjectFromUrl(getPrismaAccessURI,__PrismaAccessHeaders,ActiveIPOnboardedMobileUserLocations)
+    __ActiveIPOnboardedMobileUserLocations = getJsonObjectFromUrl(getPrismaAccessURI, __PrismaAccessHeaders, ActiveIPOnboardedMobileUserLocations)
 
     checkArgsJsonCsv(__ActiveIPOnboardedMobileUserLocations)
 
@@ -262,7 +262,7 @@ def showActiveIPOnboardedMobileUserLocations(__PrismaAccessHeaders):
 
 def showRemoteNetworkAddresses(__PrismaAccessHeaders):
     # Shows all Remote Network IPs used in the Prisma Access Service.
-    __RemoteNetworkAddresses = getJsonObjectFromUrl(getPrismaAccessURI,__PrismaAccessHeaders,RemoteNetworkAddresses)
+    __RemoteNetworkAddresses = getJsonObjectFromUrl(getPrismaAccessURI, __PrismaAccessHeaders, RemoteNetworkAddresses)
 
     checkArgsJsonCsv(__RemoteNetworkAddresses)
 
@@ -271,7 +271,7 @@ def showRemoteNetworkAddresses(__PrismaAccessHeaders):
 
 def showCleanPipeAddresses(__PrismaAccessHeaders):
     # Shows all Clean Pipe IPs used in the Prisma Access Service.
-    __CleanPipeAddresses = getJsonObjectFromUrl(getPrismaAccessURI,__PrismaAccessHeaders,CleanPipeAddresses)
+    __CleanPipeAddresses = getJsonObjectFromUrl(getPrismaAccessURI, __PrismaAccessHeaders, CleanPipeAddresses)
 
     checkArgsJsonCsv(__CleanPipeAddresses)
 
@@ -280,7 +280,7 @@ def showCleanPipeAddresses(__PrismaAccessHeaders):
 
 def showExplicitProxyAddresses(__PrismaAccessHeaders):
     # Shows all Explicit Proxy IPs used in the Prisma Access Service.
-    __ExplicitProxyAddresses = getJsonObjectFromUrl(getPrismaAccessURI,__PrismaAccessHeaders,ExplicitProxyAddresses)
+    __ExplicitProxyAddresses = getJsonObjectFromUrl(getPrismaAccessURI, __PrismaAccessHeaders, ExplicitProxyAddresses)
 
     checkArgsJsonCsv(__ExplicitProxyAddresses)
 
@@ -330,7 +330,7 @@ def apiArguments():
 def apiQueryArguments():
     # Check to see if the API Key file is defined.
     API_KEY = getAPIKey()
-    PrismaAccessHeaders = { "header-api-key": API_KEY } 
+    PrismaAccessHeaders = {"header-api-key": API_KEY}
 
     if args.allEgressIPs:
         showAllEgressIps(PrismaAccessHeaders)
