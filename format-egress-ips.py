@@ -40,6 +40,7 @@ CleanPipeAddresses = {"serviceType": "clean_pipe", "addrType": "all", "location"
 # Explicit Proxy IP addresses
 ExplicitProxyAddresses = {"serviceType": "swg_proxy", "location": "deployed", "addrType": "auth_cache_service"}
 
+
 def parseArguments():
     """ Create argument options and parse through them to determine what to do with script. """
 
@@ -93,6 +94,7 @@ def parseArguments():
     global args
     args = parser.parse_args()
 
+
 def setAPIKey(__APIKey):
     """ This will set the API key to be used by the script. """
     f_apikey = open(API_KEY_FILE,'w')
@@ -100,6 +102,7 @@ def setAPIKey(__APIKey):
     f_apikey.close()
     print('Success')
     sys.exit(0)
+
 
 def delAPIKey():
     """ Delete the API key. """
@@ -109,6 +112,7 @@ def delAPIKey():
     else:
         print('API Key file does not exist.')
         sys.exit(1)
+
 
 def getAPIKey():
     """ Get the API key from the API_KEY_FILE file. """
@@ -120,7 +124,6 @@ def getAPIKey():
         print('Cannot find key file. Please define with the --setAPIKey argument.')
         sys.exit(1)
     return __APIKey
-
 
 
 def jsonConvert2Csv(__csvFile, __jsonObject):
@@ -148,6 +151,7 @@ def jsonConvert2Csv(__csvFile, __jsonObject):
             print("This is not a valid json object to convert.")
             sys.exit(1)
 
+
 def printJsonObject(__jsonObject):
     """ Output the Json object in a tabulated format to stdout """
 
@@ -170,6 +174,7 @@ def printJsonObject(__jsonObject):
         print("Are you sure this is the right JSON object?")
         sys.exit(1)
 
+
 def getJsonObject(__jsonFile):
     """ Get the json object from the __jsonFile object. """
     if not path.exists(__jsonFile):
@@ -181,6 +186,7 @@ def getJsonObject(__jsonFile):
         f.close()
 
         return egressIps
+
 
 def getJsonObjectFromUrl(__jsonurl, __uriheaders, __uribody):
     """ Disable certificate checks when establishing a connection """
@@ -208,11 +214,13 @@ def getJsonObjectFromUrl(__jsonurl, __uriheaders, __uribody):
         print('Maximum number of retries exceeded.')
         sys.exit(1)
 
+
 def outputJsonFile(__jsonFileName, __jsonObject):
     """ Write the JSON object into the __jsonFileName file. """
     jsonFile = open(__jsonFileName, "w")
     jsonFile.write(json.dumps(__jsonObject))
     jsonFile.close()
+
 
 def checkArgsJsonCsv(__jsonObject):
     """ Check to see if the outputCsvFile is defined. """
@@ -227,6 +235,7 @@ def checkArgsJsonCsv(__jsonObject):
         outputJsonFile(args.outputJsonFile, __jsonObject)
         sys.exit(0)
 
+
 def showAllEgressIps(__PrismaAccessHeaders):
     """ Shows all egress IPs used in the Prisma Access Service. """
     __AllEgressIps = getJsonObjectFromUrl(getPrismaAccessURI, __PrismaAccessHeaders,EgressIPs)
@@ -235,6 +244,7 @@ def showAllEgressIps(__PrismaAccessHeaders):
 
     # Only reaches this stage if the outputJsonFile or outputCsvFile is not defined.
     printJsonObject(__AllEgressIps)
+
 
 def showAllActiveMobileUserAddresses(__PrismaAccessHeaders):
     """ Shows all Active Mobile User Addresses used in the Prisma Access Service. """
@@ -245,6 +255,7 @@ def showAllActiveMobileUserAddresses(__PrismaAccessHeaders):
     # Only reaches this stage if the outputJsonFile or outputCsvFile is not defined.
     printJsonObject(__AllActiveMobileUserAddresses)
 
+
 def showAllActiveReservedOnboardedMobileUserLocations(__PrismaAccessHeaders):
     """ Shows all Active/Reserved for Onboarded Mobile User Locations IPs used in the Prisma Access Service. """
     __AllActiveReservedOnboardedMobileUserLocations = getJsonObjectFromUrl(getPrismaAccessURI, __PrismaAccessHeaders, ActiveReservedOnboardedMobileUserLocations)
@@ -253,6 +264,7 @@ def showAllActiveReservedOnboardedMobileUserLocations(__PrismaAccessHeaders):
 
     # Only reaches this stage if the outputJsonFile or outputCsvFile is not defined.
     printJsonObject(__AllActiveReservedOnboardedMobileUserLocations)
+
 
 def showActiveIPOnboardedMobileUserLocations(__PrismaAccessHeaders):
     """ Shows all Active for Onboarded Mobile User Locations IPs used in the Prisma Access Service. """
@@ -263,6 +275,7 @@ def showActiveIPOnboardedMobileUserLocations(__PrismaAccessHeaders):
     # Only reaches this stage if the outputJsonFile or outputCsvFile is not defined.
     printJsonObject(__ActiveIPOnboardedMobileUserLocations)
 
+
 def showRemoteNetworkAddresses(__PrismaAccessHeaders):
     """ Shows all Remote Network IPs used in the Prisma Access Service. """
     __RemoteNetworkAddresses = getJsonObjectFromUrl(getPrismaAccessURI, __PrismaAccessHeaders, RemoteNetworkAddresses)
@@ -271,6 +284,7 @@ def showRemoteNetworkAddresses(__PrismaAccessHeaders):
 
     # Only reaches this stage if the outputJsonFile or outputCsvFile is not defined.
     printJsonObject(__RemoteNetworkAddresses)
+
 
 def showCleanPipeAddresses(__PrismaAccessHeaders):
     """ Shows all Clean Pipe IPs used in the Prisma Access Service. """
@@ -281,6 +295,7 @@ def showCleanPipeAddresses(__PrismaAccessHeaders):
     # Only reaches this stage if the outputJsonFile or outputCsvFile is not defined.
     printJsonObject(__CleanPipeAddresses)
 
+
 def showExplicitProxyAddresses(__PrismaAccessHeaders):
     """ Shows all Explicit Proxy IPs used in the Prisma Access Service. """
     __ExplicitProxyAddresses = getJsonObjectFromUrl(getPrismaAccessURI, __PrismaAccessHeaders, ExplicitProxyAddresses)
@@ -289,6 +304,7 @@ def showExplicitProxyAddresses(__PrismaAccessHeaders):
 
     # Only reaches this stage if the outputJsonFile or outputCsvFile is not defined.
     printJsonObject(__ExplicitProxyAddresses)
+
 
 def argsMobileUsers(__PrismaAccessHeaders):
     """ Parse through Mobile user arguments """
@@ -304,11 +320,13 @@ def argsMobileUsers(__PrismaAccessHeaders):
         showActiveIPOnboardedMobileUserLocations(__PrismaAccessHeaders)
         sys.exit(0)
 
+
 def argsRemoteNetworks(__PrismaAccessHeaders):
     """ Show the Remote Network Addresses """
     if args.allRemoteNetworkAddresses:
         showRemoteNetworkAddresses(__PrismaAccessHeaders)
         sys.exit(0)
+
 
 def argsCleanPipe(__PrismaAccessHeaders):
     """ Show the Clean Pipe Addresses """
@@ -316,11 +334,13 @@ def argsCleanPipe(__PrismaAccessHeaders):
         showCleanPipeAddresses(__PrismaAccessHeaders)
         sys.exit(0)
 
+
 def argsExplicitProxy(__PrismaAccessHeaders):
     """ Show the Explicit Proxy Addresses """
     if args.allExplicitProxyAddresses:
         showExplicitProxyAddresses(__PrismaAccessHeaders)
         sys.exit(0)
+
 
 def apiArguments():
     """ Parse through the API arguments """
@@ -335,6 +355,7 @@ def apiArguments():
         delAPIKey()
         sys.exit(0)
 
+
 def apiQueryArguments():
     """ Check to see if the API Key file is defined. """
     API_KEY = getAPIKey()
@@ -348,6 +369,7 @@ def apiQueryArguments():
     argsRemoteNetworks(PrismaAccessHeaders)
     argsCleanPipe(PrismaAccessHeaders)
     argsExplicitProxy(PrismaAccessHeaders)
+
 
 def main():
     """ Parse all the arguments for the script """
