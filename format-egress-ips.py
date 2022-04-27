@@ -41,9 +41,7 @@ CleanPipeAddresses = {"serviceType": "clean_pipe", "addrType": "all", "location"
 ExplicitProxyAddresses = {"serviceType": "swg_proxy", "location": "deployed", "addrType": "auth_cache_service"}
 
 def parseArguments():
-    """
-    Create argument options and parse through them to determine what to do with script.
-    """
+    # Create argument options and parse through them to determine what to do with script.
 
     # Instantiate the parser
     global scriptVersion
@@ -96,6 +94,7 @@ def parseArguments():
     args = parser.parse_args()
 
 def setAPIKey(__APIKey):
+    # This will set the API key to be used by the script.
     f_apikey = open(API_KEY_FILE,'w')
     f_apikey.write(__APIKey)
     f_apikey.close()
@@ -103,6 +102,7 @@ def setAPIKey(__APIKey):
     sys.exit(0)
 
 def delAPIKey():
+    # Delete the API key.
     if path.exists(API_KEY_FILE):
         os.remove(API_KEY_FILE)
         print('Success')
@@ -111,6 +111,7 @@ def delAPIKey():
         sys.exit(1)
 
 def getAPIKey():
+    # Get the API key from the API_KEY_FILE file.
     if path.exists(API_KEY_FILE):
         f_apikey = open(API_KEY_FILE,'r')
         __APIKey = f_apikey.readline().rstrip('\n')
@@ -122,7 +123,8 @@ def getAPIKey():
 
 
 
-def jsonConvert2Csv(__csvFile,__jsonObject):
+def jsonConvert2Csv(__csvFile, __jsonObject):
+    # Convert Json object to into csv file format.
     if "status" in __jsonObject:
         if __jsonObject["status"] == "success":
             # Open the csv file name
@@ -167,6 +169,7 @@ def printJsonObject(__jsonObject):
         sys.exit(1)
 
 def getJsonObject(__jsonFile):
+    # Get the json object from the __jsonFile object.
     if not path.exists(__jsonFile):
         print('I cannot find file ' + __jsonFile)
         sys.exit(1)
@@ -183,8 +186,6 @@ def getJsonObjectFromUrl(__jsonurl, __uriheaders, __uribody):
     requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
     try:
-
-
         # Json POST request
         __jsonRequest = requests.post(__jsonurl, headers=__uriheaders, data=json.dumps(__uribody), verify=False)
 
@@ -301,21 +302,25 @@ def argsMobileUsers(__PrismaAccessHeaders):
         sys.exit(0)
 
 def argsRemoteNetworks(__PrismaAccessHeaders):
+    # Show the Remote Network Addresses
     if args.allRemoteNetworkAddresses:
         showRemoteNetworkAddresses(__PrismaAccessHeaders)
         sys.exit(0)
 
 def argsCleanPipe(__PrismaAccessHeaders):
+    # Show the Clean Pipe Addresses
     if args.allCleanPipeAddresses:
         showCleanPipeAddresses(__PrismaAccessHeaders)
         sys.exit(0)
 
 def argsExplicitProxy(__PrismaAccessHeaders):
+    # Show the Explicit Proxy Addresses
     if args.allExplicitProxyAddresses:
         showExplicitProxyAddresses(__PrismaAccessHeaders)
         sys.exit(0)
 
 def apiArguments():
+    # Parse through the API arguments
     if args.setAPIKey:
         setAPIKey(args.setAPIKey)
 
@@ -336,12 +341,10 @@ def apiQueryArguments():
         showAllEgressIps(PrismaAccessHeaders)
         sys.exit(0)
 
-
     argsMobileUsers(PrismaAccessHeaders)
     argsRemoteNetworks(PrismaAccessHeaders)
     argsCleanPipe(PrismaAccessHeaders)
     argsExplicitProxy(PrismaAccessHeaders)
-
 
 def main():
     # Parse all the arguments for the script
@@ -374,9 +377,7 @@ def main():
 
 if __name__ == '__main__':
     try:
-
         main()
-
     except KeyboardInterrupt:
         print('Interrupted')
         print
