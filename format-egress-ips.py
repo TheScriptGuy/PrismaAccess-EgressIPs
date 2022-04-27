@@ -201,7 +201,7 @@ def getJsonObjectFromUrl(__jsonurl, __uriheaders, __uribody):
     except requests.exceptions.TooManyRedirects:
         print('Too many redirects while accessing the URL')
         sys.exit(1)
-    except requests.exceptions.ConnectionError as e:
+    except requests.exceptions.ConnectionError:
         print('Could not connect to URL - ' + __jsonurl + '\n')
         sys.exit(1)
     except urllib3.exceptions.MaxRetryError:
@@ -383,7 +383,7 @@ if __name__ == '__main__':
         main()
     except KeyboardInterrupt:
         print('Interrupted')
-        print
+        print()
         try:
             sys.exit(0)
         except SystemExit:
