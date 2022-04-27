@@ -1,9 +1,9 @@
 # Formats the json output to get all the egress IPs
 # Author:          TheScriptGuy
-# Last modified:   2022-04-25
-# Version:         0.06
+# Last modified:   2022-04-27
+# Version:         0.07
 # Changelog:
-#   By default the script queries the 'prod' environment. Use the --environment variable to query another location
+#   Aligning with best practices for coding.
 
 import sys
 import json
@@ -14,7 +14,7 @@ import requests
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
 
-scriptVersion = "0.06"
+scriptVersion = "0.07"
 
 PrismaAccessHeaders = { "header-api-key": "" } 
 
@@ -115,10 +115,10 @@ def getAPIKey():
         f_apikey = open(API_KEY_FILE,'r')
         __APIKey = f_apikey.readline().rstrip('\n')
         f_apikey.close()
-        return __APIKey
     else:
         print('Cannot find key file. Please define with the --setAPIKey argument.')
         sys.exit(1)
+    return __APIKey
 
 
 

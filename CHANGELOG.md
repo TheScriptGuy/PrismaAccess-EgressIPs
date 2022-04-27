@@ -1,4 +1,8 @@
 # PrismaAccess-Egress IPs Changelog
+## 2022-04-27 - 0.07
+## Fixes
+* Rewriting code to align with best practices.
+
 ## 2022-04-25 - 0.06
 ## Changes
 * Added `--environment` argument to help querying between different environments. By default it queries the prod environment.
