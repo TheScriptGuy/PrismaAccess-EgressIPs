@@ -227,9 +227,9 @@ def checkArgsJsonCsv(__jsonObject):
         sys.exit(0)
 
 
-def showAllEgressIps(__PrismaAccessHeaders):
+def showAllEgressIps(__getPrismaAccessURI, __PrismaAccessHeaders):
     """Shows all egress IPs used in the Prisma Access Service."""
-    __AllEgressIps = getJsonObjectFromUrl(getPrismaAccessURI,
+    __AllEgressIps = getJsonObjectFromUrl(__getPrismaAccessURI,
                                           __PrismaAccessHeaders,
                                           EgressIPs)
 
@@ -239,9 +239,9 @@ def showAllEgressIps(__PrismaAccessHeaders):
     printJsonObject(__AllEgressIps)
 
 
-def showAllActiveMobileUserAddresses(__PrismaAccessHeaders):
+def showAllActiveMobileUserAddresses(__getPrismaAccessURI, __PrismaAccessHeaders):
     """Shows all Active Mobile User Addresses used in the Prisma Access Service."""
-    __AllActiveMobileUserAddresses = getJsonObjectFromUrl(getPrismaAccessURI,
+    __AllActiveMobileUserAddresses = getJsonObjectFromUrl(__getPrismaAccessURI,
                                                           __PrismaAccessHeaders,
                                                           ActiveMobileUserAddresses)
 
@@ -251,9 +251,9 @@ def showAllActiveMobileUserAddresses(__PrismaAccessHeaders):
     printJsonObject(__AllActiveMobileUserAddresses)
 
 
-def showAllActiveReservedOnboardedMobileUserLocations(__PrismaAccessHeaders):
+def showAllActiveReservedOnboardedMobileUserLocations(__getPrismaAccessURI, __PrismaAccessHeaders):
     """Shows all Active/Reserved for Onboarded Mobile User Locations IPs used in the Prisma Access Service."""
-    __AllActiveReservedOnboardedMobileUserLocations = getJsonObjectFromUrl(getPrismaAccessURI,
+    __AllActiveReservedOnboardedMobileUserLocations = getJsonObjectFromUrl(__getPrismaAccessURI,
                                                                            __PrismaAccessHeaders,
                                                                            ActiveReservedOnboardedMobileUserLocations)
 
@@ -263,9 +263,9 @@ def showAllActiveReservedOnboardedMobileUserLocations(__PrismaAccessHeaders):
     printJsonObject(__AllActiveReservedOnboardedMobileUserLocations)
 
 
-def showActiveIPOnboardedMobileUserLocations(__PrismaAccessHeaders):
+def showActiveIPOnboardedMobileUserLocations(__getPrismaAccessURI, __PrismaAccessHeaders):
     """Shows all Active for Onboarded Mobile User Locations IPs used in the Prisma Access Service."""
-    __ActiveIPOnboardedMobileUserLocations = getJsonObjectFromUrl(getPrismaAccessURI,
+    __ActiveIPOnboardedMobileUserLocations = getJsonObjectFromUrl(__getPrismaAccessURI,
                                                                   __PrismaAccessHeaders,
                                                                   ActiveIPOnboardedMobileUserLocations)
 
@@ -275,9 +275,9 @@ def showActiveIPOnboardedMobileUserLocations(__PrismaAccessHeaders):
     printJsonObject(__ActiveIPOnboardedMobileUserLocations)
 
 
-def showRemoteNetworkAddresses(__PrismaAccessHeaders):
+def showRemoteNetworkAddresses(__getPrismaAccessURI, __PrismaAccessHeaders):
     """Shows all Remote Network IPs used in the Prisma Access Service."""
-    __RemoteNetworkAddresses = getJsonObjectFromUrl(getPrismaAccessURI,
+    __RemoteNetworkAddresses = getJsonObjectFromUrl(__getPrismaAccessURI,
                                                     __PrismaAccessHeaders,
                                                     RemoteNetworkAddresses)
 
@@ -287,9 +287,9 @@ def showRemoteNetworkAddresses(__PrismaAccessHeaders):
     printJsonObject(__RemoteNetworkAddresses)
 
 
-def showCleanPipeAddresses(__PrismaAccessHeaders):
+def showCleanPipeAddresses(__getPrismaAccessURI, __PrismaAccessHeaders):
     """Shows all Clean Pipe IPs used in the Prisma Access Service."""
-    __CleanPipeAddresses = getJsonObjectFromUrl(getPrismaAccessURI,
+    __CleanPipeAddresses = getJsonObjectFromUrl(__getPrismaAccessURI,
                                                 __PrismaAccessHeaders,
                                                 CleanPipeAddresses)
 
@@ -299,9 +299,9 @@ def showCleanPipeAddresses(__PrismaAccessHeaders):
     printJsonObject(__CleanPipeAddresses)
 
 
-def showExplicitProxyAddresses(__PrismaAccessHeaders):
+def showExplicitProxyAddresses(__getPrismaAccessURI, __PrismaAccessHeaders):
     """Shows all Explicit Proxy IPs used in the Prisma Access Service."""
-    __ExplicitProxyAddresses = getJsonObjectFromUrl(getPrismaAccessURI,
+    __ExplicitProxyAddresses = getJsonObjectFromUrl(__getPrismaAccessURI,
                                                     __PrismaAccessHeaders,
                                                     ExplicitProxyAddresses)
 
@@ -311,39 +311,39 @@ def showExplicitProxyAddresses(__PrismaAccessHeaders):
     printJsonObject(__ExplicitProxyAddresses)
 
 
-def argsMobileUsers(__PrismaAccessHeaders):
+def argsMobileUsers(__getPrismaAccessURI, __PrismaAccessHeaders):
     """Parse through Mobile user arguments"""
     if args.allActiveMobileUserAddresses:
-        showAllActiveMobileUserAddresses(__PrismaAccessHeaders)
+        showAllActiveMobileUserAddresses(__getPrismaAccessURI, __PrismaAccessHeaders)
         sys.exit(0)
 
     if args.allAROnboardedMobileUserLocations:
-        showAllActiveReservedOnboardedMobileUserLocations(__PrismaAccessHeaders)
+        showAllActiveReservedOnboardedMobileUserLocations(__getPrismaAccessURI, __PrismaAccessHeaders)
         sys.exit(0)
 
     if args.allActiveIPOnboardedMobileUserLocations:
-        showActiveIPOnboardedMobileUserLocations(__PrismaAccessHeaders)
+        showActiveIPOnboardedMobileUserLocations(__getPrismaAccessURI, __PrismaAccessHeaders)
         sys.exit(0)
 
 
-def argsRemoteNetworks(__PrismaAccessHeaders):
+def argsRemoteNetworks(__getPrismaAccessURI, __PrismaAccessHeaders):
     """Show the Remote Network Addresses"""
     if args.allRemoteNetworkAddresses:
-        showRemoteNetworkAddresses(__PrismaAccessHeaders)
+        showRemoteNetworkAddresses(__getPrismaAccessURI, __PrismaAccessHeaders)
         sys.exit(0)
 
 
-def argsCleanPipe(__PrismaAccessHeaders):
+def argsCleanPipe(__getPrismaAccessURI, __PrismaAccessHeaders):
     """Show the Clean Pipe Addresses"""
     if args.allCleanPipeAddresses:
-        showCleanPipeAddresses(__PrismaAccessHeaders)
+        showCleanPipeAddresses(__getPrismaAccessURI, __PrismaAccessHeaders)
         sys.exit(0)
 
 
-def argsExplicitProxy(__PrismaAccessHeaders):
+def argsExplicitProxy(__getPrismaAccessURI, __PrismaAccessHeaders):
     """Show the Explicit Proxy Addresses"""
     if args.allExplicitProxyAddresses:
-        showExplicitProxyAddresses(__PrismaAccessHeaders)
+        showExplicitProxyAddresses(__getPrismaAccessURI, __PrismaAccessHeaders)
         sys.exit(0)
 
 
@@ -361,24 +361,23 @@ def apiArguments():
         sys.exit(0)
 
 
-def apiQueryArguments():
+def apiQueryArguments(__getPrismaAccessURI):
     """Check to see if the API Key file is defined."""
     API_KEY = getAPIKey()
     PrismaAccessHeaders = {"header-api-key": API_KEY}
 
     if args.allEgressIPs:
-        showAllEgressIps(PrismaAccessHeaders)
+        showAllEgressIps(__getPrismaAccessURI, PrismaAccessHeaders)
         sys.exit(0)
 
-    argsMobileUsers(PrismaAccessHeaders)
-    argsRemoteNetworks(PrismaAccessHeaders)
-    argsCleanPipe(PrismaAccessHeaders)
-    argsExplicitProxy(PrismaAccessHeaders)
+    argsMobileUsers(__getPrismaAccessURI, PrismaAccessHeaders)
+    argsRemoteNetworks(__getPrismaAccessURI, PrismaAccessHeaders)
+    argsCleanPipe(__getPrismaAccessURI, PrismaAccessHeaders)
+    argsExplicitProxy(__getPrismaAccessURI, PrismaAccessHeaders)
 
 
 def main():
     """Parse all the arguments for the script"""
-    global getPrismaAccessURI
     parseArguments()
 
     # Define the URL to query
@@ -389,11 +388,12 @@ def main():
 
     if args.allEgressIPs or \
        args.allAROnboardedMobileUserLocations or \
+       args.allActiveIPOnboardedMobileUserLocations or \
        args.allActiveMobileUserAddresses or \
        args.allRemoteNetworkAddresses or \
        args.allCleanPipeAddresses or \
        args.allExplicitProxyAddresses:
-        apiQueryArguments()
+        apiQueryArguments(getPrismaAccessURI)
 
     if args.fileName:
         # If the --fileName argument is specified, the script will
