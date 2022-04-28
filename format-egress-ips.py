@@ -130,21 +130,18 @@ def jsonConvert2Csv(__csvFile, __jsonObject):
         if __jsonObject["status"] == "success":
             # Open the csv file name
             # file contents will be overwritten.
-            csv = open(__csvFile,"w")
+            with open(__csvFile, 'w') as csv:
+                # CSV headers
+                csvHeaders = ["Location", "serviceType", "egress IP", "Active/Reserved"]
 
-            # CSV headers
-            csvHeaders = ["Location", "serviceType", "egress IP", "Active/Reserved"]
+                # Write the CSV headers to the file.
+                csv.write(','.join(f'"{w}"' for w in csvHeaders) + '\n')
+                # Iterate through the json object and write the output into the csv file
+                for objEgressIps in __jsonObject["result"]:
+                    for obj in objEgressIps["address_details"]:
+                        strToWrite = [objEgressIps["zone"], obj["serviceType"], obj["address"], obj["addressType"]]
+                        csv.write(','.join(f'"{w}"' for w in strToWrite) + '\n')
 
-            # Write the CSV headers to the file.
-            csv.write(','.join(f'"{w}"' for w in csvHeaders) + '\n')
-            # Iterate through the json object and write the output into the csv file
-            for objEgressIps in __jsonObject["result"]:
-                for obj in objEgressIps["address_details"]:
-                    strToWrite = [objEgressIps["zone"], obj["serviceType"], obj["address"], obj["addressType"]]
-                    csv.write(','.join(f'"{w}"' for w in strToWrite) + '\n')
-
-            # Close the file
-            csv.close()
         else:
             print("This is not a valid json object to convert.")
             sys.exit(1)
