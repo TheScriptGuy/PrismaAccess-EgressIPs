@@ -28,7 +28,7 @@ usage: format-egress-ips.py [-h] [--fileName FILENAME] [--setAPIKey SETAPIKEY] [
                             [--allAROnboardedMobileUserLocations] [--allActiveIPOnboardedMobileUserLocations] [--allActiveMobileUserAddresses] [--allRemoteNetworkAddresses]
                             [--allCleanPipeAddresses] [--allExplicitProxyAddresses] [--outputJsonFile OUTPUTJSONFILE] [--outputCsvFile OUTPUTCSVFILE]
 
-Format Egress IPs 0.07
+Format Egress IPs 0.08
 
 optional arguments:
   -h, --help            show this help message and exit

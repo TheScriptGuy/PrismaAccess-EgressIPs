@@ -1,4 +1,8 @@
 # PrismaAccess-Egress IPs Changelog
+## 2022-04-28 - 0.08
+## Fixes
+* Added some better error handling in case a json object is not returned.
+
 ## 2022-04-27 - 0.07
 ## Fixes
 * Rewriting code to align with best practices.
