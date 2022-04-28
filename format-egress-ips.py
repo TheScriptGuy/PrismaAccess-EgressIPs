@@ -213,9 +213,8 @@ def getJsonObjectFromUrl(__jsonurl, __uriheaders, __uribody):
 
 def outputJsonFile(__jsonFileName, __jsonObject):
     """ Write the JSON object into the __jsonFileName file. """
-    jsonFile = open(__jsonFileName, "w")
-    jsonFile.write(json.dumps(__jsonObject))
-    jsonFile.close()
+    with open(__jsonFileName,'w') as jsonFile:
+        jsonFile.write(json.dumps(__jsonObject))
 
 
 def checkArgsJsonCsv(__jsonObject):
