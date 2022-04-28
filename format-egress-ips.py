@@ -16,12 +16,7 @@ from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
 scriptVersion = "0.08"
 
-PrismaAccessHeaders = {"header-api-key": ""}
-
 API_KEY_FILE = 'prisma-access-api.key'
-
-getPrismaAccessURI = ''
-
 
 # All Public IP addresses
 EgressIPs = {"serviceType": "all", "addrType": "all", "location": "all"}
