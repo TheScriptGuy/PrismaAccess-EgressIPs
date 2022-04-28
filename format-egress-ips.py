@@ -20,7 +20,7 @@ PrismaAccessHeaders = {"header-api-key": ""}
 
 API_KEY_FILE = 'prisma-access-api.key'
 
-getPrismaAccessURI =''
+getPrismaAccessURI = ''
 
 
 # All Public IP addresses
@@ -97,7 +97,7 @@ def parseArguments():
 
 def setAPIKey(__APIKey):
     """ This will set the API key to be used by the script. """
-    with open(API_KEY_FILE,'w') as f_apikey:
+    with open(API_KEY_FILE, 'w') as f_apikey:
         f_apikey.write(__APIKey)
     print('Success')
     sys.exit(0)
@@ -213,7 +213,7 @@ def getJsonObjectFromUrl(__jsonurl, __uriheaders, __uribody):
 
 def outputJsonFile(__jsonFileName, __jsonObject):
     """ Write the JSON object into the __jsonFileName file. """
-    with open(__jsonFileName,'w') as jsonFile:
+    with open(__jsonFileName, 'w') as jsonFile:
         jsonFile.write(json.dumps(__jsonObject))
 
 
@@ -232,7 +232,7 @@ def checkArgsJsonCsv(__jsonObject):
 
 def showAllEgressIps(__PrismaAccessHeaders):
     """ Shows all egress IPs used in the Prisma Access Service. """
-    __AllEgressIps = getJsonObjectFromUrl(getPrismaAccessURI, __PrismaAccessHeaders,EgressIPs)
+    __AllEgressIps = getJsonObjectFromUrl(getPrismaAccessURI, __PrismaAccessHeaders, EgressIPs)
 
     checkArgsJsonCsv(__AllEgressIps)
 
