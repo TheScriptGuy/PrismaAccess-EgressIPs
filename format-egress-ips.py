@@ -97,9 +97,8 @@ def parseArguments():
 
 def setAPIKey(__APIKey):
     """ This will set the API key to be used by the script. """
-    f_apikey = open(API_KEY_FILE,'w')
-    f_apikey.write(__APIKey)
-    f_apikey.close()
+    with open(API_KEY_FILE,'w') as f_apikey:
+        f_apikey.write(__APIKey)
     print('Success')
     sys.exit(0)
 
@@ -117,9 +116,8 @@ def delAPIKey():
 def getAPIKey():
     """ Get the API key from the API_KEY_FILE file. """
     if path.exists(API_KEY_FILE):
-        f_apikey = open(API_KEY_FILE,'r')
-        __APIKey = f_apikey.readline().rstrip('\n')
-        f_apikey.close()
+        with open(API_KEY_FILE) as f_apikey:
+            __APIKey = f_apikey.readline().rstrip('\n')
     else:
         print('Cannot find key file. Please define with the --setAPIKey argument.')
         sys.exit(1)
@@ -154,7 +152,6 @@ def jsonConvert2Csv(__csvFile, __jsonObject):
 
 def printJsonObject(__jsonObject):
     """ Output the Json object in a tabulated format to stdout """
-
     # Print Headers
     print('{: <20}{: <18}{: <18}{: <18}'.format("Location", "serviceType", "egress IP", "Active/Reserved"))
     try:
@@ -190,7 +187,6 @@ def getJsonObject(__jsonFile):
 
 def getJsonObjectFromUrl(__jsonurl, __uriheaders, __uribody):
     """ Disable certificate checks when establishing a connection """
-
     requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
     try:
@@ -224,7 +220,6 @@ def outputJsonFile(__jsonFileName, __jsonObject):
 
 def checkArgsJsonCsv(__jsonObject):
     """ Check to see if the outputCsvFile is defined. """
-
     if args.outputCsvFile:
         # Convert the Json object into CSV format.
         jsonConvert2Csv(args.outputCsvFile, __jsonObject)
