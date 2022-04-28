@@ -43,7 +43,6 @@ ExplicitProxyAddresses = {"serviceType": "swg_proxy", "location": "deployed", "a
 
 def parseArguments():
     """ Create argument options and parse through them to determine what to do with script. """
-
     # Instantiate the parser
     global scriptVersion
     parser = argparse.ArgumentParser(description='Format Egress IPs ' + scriptVersion)
@@ -149,7 +148,6 @@ def jsonConvert2Csv(__csvFile, __jsonObject):
 
 def printJsonObject(__jsonObject):
     """ Output the Json object in a tabulated format to stdout """
-
     # Print Headers
     tableString = '{: <20}{: <18}{: <18}{: <18}' 
     print(tableString.format("Location", "serviceType", "egress IP", "Active/Reserved"))
@@ -231,7 +229,9 @@ def checkArgsJsonCsv(__jsonObject):
 
 def showAllEgressIps(__PrismaAccessHeaders):
     """ Shows all egress IPs used in the Prisma Access Service. """
-    __AllEgressIps = getJsonObjectFromUrl(getPrismaAccessURI, __PrismaAccessHeaders, EgressIPs)
+    __AllEgressIps = getJsonObjectFromUrl(getPrismaAccessURI,
+                                          __PrismaAccessHeaders,
+                                          EgressIPs)
 
     checkArgsJsonCsv(__AllEgressIps)
 
@@ -242,7 +242,8 @@ def showAllEgressIps(__PrismaAccessHeaders):
 def showAllActiveMobileUserAddresses(__PrismaAccessHeaders):
     """ Shows all Active Mobile User Addresses used in the Prisma Access Service. """
     __AllActiveMobileUserAddresses = getJsonObjectFromUrl(getPrismaAccessURI,
-        __PrismaAccessHeaders, ActiveMobileUserAddresses)
+                                                          __PrismaAccessHeaders,
+                                                          ActiveMobileUserAddresses)
 
     checkArgsJsonCsv(__AllActiveMobileUserAddresses)
 
@@ -253,7 +254,8 @@ def showAllActiveMobileUserAddresses(__PrismaAccessHeaders):
 def showAllActiveReservedOnboardedMobileUserLocations(__PrismaAccessHeaders):
     """ Shows all Active/Reserved for Onboarded Mobile User Locations IPs used in the Prisma Access Service. """
     __AllActiveReservedOnboardedMobileUserLocations = getJsonObjectFromUrl(getPrismaAccessURI,
-        __PrismaAccessHeaders, ActiveReservedOnboardedMobileUserLocations)
+                                                                           __PrismaAccessHeaders,
+                                                                           ActiveReservedOnboardedMobileUserLocations)
 
     checkArgsJsonCsv(__AllActiveReservedOnboardedMobileUserLocations)
 
@@ -264,7 +266,8 @@ def showAllActiveReservedOnboardedMobileUserLocations(__PrismaAccessHeaders):
 def showActiveIPOnboardedMobileUserLocations(__PrismaAccessHeaders):
     """ Shows all Active for Onboarded Mobile User Locations IPs used in the Prisma Access Service. """
     __ActiveIPOnboardedMobileUserLocations = getJsonObjectFromUrl(getPrismaAccessURI,
-        __PrismaAccessHeaders, ActiveIPOnboardedMobileUserLocations)
+                                                                  __PrismaAccessHeaders,
+                                                                  ActiveIPOnboardedMobileUserLocations)
 
     checkArgsJsonCsv(__ActiveIPOnboardedMobileUserLocations)
 
@@ -275,7 +278,8 @@ def showActiveIPOnboardedMobileUserLocations(__PrismaAccessHeaders):
 def showRemoteNetworkAddresses(__PrismaAccessHeaders):
     """ Shows all Remote Network IPs used in the Prisma Access Service. """
     __RemoteNetworkAddresses = getJsonObjectFromUrl(getPrismaAccessURI,
-        __PrismaAccessHeaders, RemoteNetworkAddresses)
+                                                    __PrismaAccessHeaders,
+                                                    RemoteNetworkAddresses)
 
     checkArgsJsonCsv(__RemoteNetworkAddresses)
 
@@ -286,7 +290,8 @@ def showRemoteNetworkAddresses(__PrismaAccessHeaders):
 def showCleanPipeAddresses(__PrismaAccessHeaders):
     """ Shows all Clean Pipe IPs used in the Prisma Access Service. """
     __CleanPipeAddresses = getJsonObjectFromUrl(getPrismaAccessURI,
-        __PrismaAccessHeaders, CleanPipeAddresses)
+                                                __PrismaAccessHeaders,
+                                                CleanPipeAddresses)
 
     checkArgsJsonCsv(__CleanPipeAddresses)
 
@@ -296,8 +301,9 @@ def showCleanPipeAddresses(__PrismaAccessHeaders):
 
 def showExplicitProxyAddresses(__PrismaAccessHeaders):
     """ Shows all Explicit Proxy IPs used in the Prisma Access Service. """
-    __ExplicitProxyAddresses = getJsonObjectFromUrl(getPrismaAccessURI, \
-        __PrismaAccessHeaders, ExplicitProxyAddresses)
+    __ExplicitProxyAddresses = getJsonObjectFromUrl(getPrismaAccessURI,
+                                                    __PrismaAccessHeaders,
+                                                    ExplicitProxyAddresses)
 
     checkArgsJsonCsv(__ExplicitProxyAddresses)
 
