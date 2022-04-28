@@ -1,9 +1,9 @@
 # Formats the json output to get all the egress IPs
 # Author:          TheScriptGuy
 # Last modified:   2022-04-27
-# Version:         0.07
+# Version:         0.08
 # Changelog:
-#   Aligning with best practices for coding.
+#   Added some better error handling in case a json object is not returned.
 
 import sys
 import json
@@ -14,7 +14,7 @@ import requests
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
 
-scriptVersion = "0.07"
+scriptVersion = "0.08"
 
 PrismaAccessHeaders = {"header-api-key": ""}
 
@@ -198,13 +198,13 @@ def getJsonObjectFromUrl(__jsonurl, __uriheaders, __uribody):
         print('Timeout while retrieving URL.')
         sys.exit(1)
     except requests.exceptions.TooManyRedirects:
-        print('Too many redirects while accessing the URL')
+        print('Too many redirects while accessing the URL.')
         sys.exit(1)
     except requests.exceptions.ConnectionError:
         print('Could not connect to URL - ' + __jsonurl + '\n')
         sys.exit(1)
-    except urllib3.exceptions.MaxRetryError:
-        print('Maximum number of retries exceeded.')
+    except json.decoder.JSONDecodeError:
+        print('Not a valid json object returned.')
         sys.exit(1)
 
 
