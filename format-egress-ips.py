@@ -362,8 +362,6 @@ def apiArguments():
 
 
 def apiQueryArguments():
-    global PrismaAccessHeaders
-    
     """ Check to see if the API Key file is defined. """
     API_KEY = getAPIKey()
     PrismaAccessHeaders = {"header-api-key": API_KEY}
