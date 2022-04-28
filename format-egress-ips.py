@@ -133,7 +133,7 @@ def jsonConvert2Csv(__csvFile, __jsonObject):
             csv = open(__csvFile,"w")
 
             # CSV headers
-            csvHeaders = ["Location","serviceType","egress IP","Active/Reserved"]
+            csvHeaders = ["Location", "serviceType", "egress IP", "Active/Reserved"]
 
             # Write the CSV headers to the file.
             csv.write(','.join(f'"{w}"' for w in csvHeaders) + '\n')
