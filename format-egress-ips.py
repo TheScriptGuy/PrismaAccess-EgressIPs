@@ -183,7 +183,7 @@ def getJsonObject(__jsonFile):
 
 
 def getJsonObjectFromUrl(__jsonurl, __uriheaders, __uribody):
-    """Disable certificate checks when establishing a connection"""
+    """Disable certificate checks when establishing a connection."""
     requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
     try:
