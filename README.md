@@ -100,7 +100,7 @@ Vietnam               gp_gateway          191.199.280.100     active
 US Central            gp_gateway          103.191.878.100     active
 ```
 
-If you want to leverage the `--apiKey` argument instead of using the options above, repeat the same command with `--apiKey defined`
+If you want to leverage the `--apiKey` argument instead of using the options above, repeat the same command with `--apiKey` defined.
 ```bash
 $ python3 format-egress-ips.py --apiKey aldkfjlaksji4u50198u09uef-a9udfb9ausdf --allEgressIPs
 Location              serviceType         egress IP           Active/Reserved
