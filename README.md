@@ -12,7 +12,7 @@ If no arguments are specified, the script will not run. The last order of evalua
 
 The logic is such that it follows this order:
 1. If no arguments are supplied, exit script.
-2. If one of the --all* arguments are supplied, check to see if the API Key exists. 
+2. If one of the --all* arguments are supplied, check to see if the API Key exists (either checking the file prisma-access-api.key file or looking at the argument supplied from --apiKey. 
 - No API key, exit script. 
 - API key exists, then attempt to get the egress IPs based based on argument supplied. 
 3. If egress IPs are returned from the API, then display them in tabulated format to stdout. Exit script.
@@ -24,19 +24,21 @@ The logic is such that it follows this order:
 
 ```bash
 $ python3 format-egress-ips.py
-usage: format-egress-ips.py [-h] [--fileName FILENAME] [--setAPIKey SETAPIKEY] [--showAPIKey] [--deleteAPIKey] [--environment ENVIRONMENT] [--allEgressIPs]
-                            [--allAROnboardedMobileUserLocations] [--allActiveIPOnboardedMobileUserLocations] [--allActiveMobileUserAddresses] [--allRemoteNetworkAddresses]
-                            [--allCleanPipeAddresses] [--allExplicitProxyAddresses] [--outputJsonFile OUTPUTJSONFILE] [--outputCsvFile OUTPUTCSVFILE]
+usage: format-egress-ips.py [-h] [--fileName FILENAME] [--setAPIKey SETAPIKEY] [--showAPIKey] [--deleteAPIKey] [--apiKey APIKEY] [--environment ENVIRONMENT]
+                            [--allEgressIPs] [--allAROnboardedMobileUserLocations] [--allActiveIPOnboardedMobileUserLocations] [--allActiveMobileUserAddresses]
+                            [--allRemoteNetworkAddresses] [--allCleanPipeAddresses] [--allExplicitProxyAddresses] [--outputJsonFile OUTPUTJSONFILE]
+                            [--outputCsvFile OUTPUTCSVFILE]
 
-Format Egress IPs 0.08
+Format Egress IPs 0.09
 
-optional arguments:
+options:
   -h, --help            show this help message and exit
   --fileName FILENAME   List of json formatted egress IPs to convert.
   --setAPIKey SETAPIKEY
                         Sets the API key into prisma-access-api.key file
   --showAPIKey          Shows the Prisma Access API Key from the prisma-access-api.key file.
   --deleteAPIKey        Deletes the Prisma Access API Key from prisma-access-api.key file.
+  --apiKey APIKEY       Use stdin to enter API Key
   --environment ENVIRONMENT
                         By default, script queries prod environment.
   --allEgressIPs        Shows all egress IPs for Prisma Access Service
@@ -98,10 +100,24 @@ Vietnam               gp_gateway          191.199.280.100     active
 US Central            gp_gateway          103.191.878.100     active
 ```
 
+If you want to leverage the `--apiKey` argument instead of using the options above, repeat the same command with `--apiKey defined`
+```bash
+$ python3 format-egress-ips.py --apiKey aldkfjlaksji4u50198u09uef-a9udfb9ausdf --allEgressIPs
+Location              serviceType         egress IP           Active/Reserved
+Singapore             gp_gateway          123.234.123.124     active
+Thailand              gp_gateway          119.256.139.101     active
+Vietnam               gp_gateway          191.199.280.100     active
+US Central            gp_gateway          103.191.878.100     active
+```
+
 ## Convert egress IPs into comma separated values (csv) format
 No output is displayed, but a file is created based on the argument supplied through --outputCsvFile
 ```bash
 $ python3 format-egress-ips.py --allEgressIPs --outputCsvFile output.csv
+```
+Similarly as above, if you haven't defined an API key by using the `--setAPIKey`, you can use the `--apiKey` argument and pass it via stdin:
+```bash
+$ python3 format-egress-ips.py --apiKey aldkfjlaksji4u50198u09uef-a9udfb9ausdf --allEgressIPs --outputCsvFile output.csv
 ```
 
 

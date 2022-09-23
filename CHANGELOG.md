@@ -1,4 +1,8 @@
 # PrismaAccess-Egress IPs Changelog
+## 2022-09-23 - 0.09
+## New feature
+* Added `--apiKey` argument to allow the API key to be passed via stdin. See [README.md](https://github.com/TheScriptGuy/PrismaAccess-EgressIPs/blob/main/README.md) for usage.
+
 ## 2022-04-28 - 0.08
 ## Fixes
 * Added some better error handling in case a json object is not returned.

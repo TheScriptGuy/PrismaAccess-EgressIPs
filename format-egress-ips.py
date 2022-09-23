@@ -1,7 +1,7 @@
 # Formats the json output to get all the egress IPs
 # Author:          TheScriptGuy
-# Last modified:   2022-04-27
-# Version:         0.08
+# Last modified:   2022-09-23
+# Version:         0.09
 # Changelog:
 #   Added some better error handling in case a json object is not returned.
 
@@ -14,7 +14,7 @@ import requests
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
 
-scriptVersion = "0.08"
+scriptVersion = "0.09"
 
 API_KEY_FILE = 'prisma-access-api.key'
 
@@ -54,6 +54,9 @@ def parseArguments():
 
     parser.add_argument('--deleteAPIKey', action='store_true',
                         help='Deletes the Prisma Access API Key from prisma-access-api.key file.')
+
+    parser.add_argument('--apiKey', default='',
+                        help='Use stdin to enter API Key')
 
     parser.add_argument('--environment', default='prod',
                         help='By default, script queries prod environment.')
@@ -109,12 +112,15 @@ def delAPIKey():
 
 def getAPIKey():
     """Get the API key from the API_KEY_FILE file."""
-    if path.exists(API_KEY_FILE):
-        with open(API_KEY_FILE) as f_apikey:
-            __APIKey = f_apikey.readline().rstrip('\n')
+    if args.apiKey:
+        __APIKey = args.apiKey
     else:
-        print('Cannot find key file. Please define with the --setAPIKey argument.')
-        sys.exit(1)
+        if path.exists(API_KEY_FILE):
+            with open(API_KEY_FILE) as f_apikey:
+                __APIKey = f_apikey.readline().rstrip('\n')
+        else:
+            print('Cannot find key file. Please define with the --setAPIKey argument or use --apiKey argument and pass through stdin.')
+            sys.exit(1)
     return __APIKey
 
 
