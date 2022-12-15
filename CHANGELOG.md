@@ -1,4 +1,8 @@
 # PrismaAccess-Egress IPs Changelog
+## 2022-12-14 - 0.10
+## New feature
+* added `--allLoopbackIPAddresses` to show the loopback IP addresses of your environment.
+
 ## 2022-09-23 - 0.09
 ## New feature
 * Added `--apiKey` argument to allow the API key to be passed via stdin. See [README.md](https://github.com/TheScriptGuy/PrismaAccess-EgressIPs/blob/main/README.md) for usage.
