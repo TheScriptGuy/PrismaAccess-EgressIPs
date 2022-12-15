@@ -1,7 +1,7 @@
 # Formats the json output to get all the egress IPs
 # Author:          TheScriptGuy
-# Last modified:   2022-09-23
-# Version:         0.09
+# Last modified:   2022-12-14
+# Version:         0.10
 # Changelog:
 #   Added some better error handling in case a json object is not returned.
 
@@ -14,7 +14,7 @@ import requests
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
 
-scriptVersion = "0.09"
+scriptVersion = "0.10"
 
 API_KEY_FILE = 'prisma-access-api.key'
 
@@ -34,6 +34,9 @@ CleanPipeAddresses = {"serviceType": "clean_pipe", "addrType": "all", "location"
 
 # Explicit Proxy IP addresses
 ExplicitProxyAddresses = {"serviceType": "swg_proxy", "location": "deployed", "addrType": "auth_cache_service"}
+
+# Loopback IP
+addressType = "loopback_ip"
 
 
 def parseArguments():
@@ -82,6 +85,9 @@ def parseArguments():
     parser.add_argument('--allExplicitProxyAddresses', action='store_true',
                         help='Shows all Clean Pipe Addresses')
 
+    parser.add_argument('--allLoopbackIPAddresses', action='store_true',
+                        help='Retrieves all the loopback addresses for each location.')
+
     parser.add_argument('--outputJsonFile', default='',
                         help='Send json output to file.')
 
@@ -124,10 +130,14 @@ def getAPIKey():
     return __APIKey
 
 
-def jsonConvert2Csv(__csvFile, __jsonObject):
+def jsonConvert2Csv(__csvFile, __dataObject):
     """Convert Json object to into csv file format."""
-    if "status" in __jsonObject:
-        if __jsonObject["status"] == "success":
+
+    __myDataObject = __dataObject
+
+    if not isinstance(__myDataObject, list):
+        # __dataObject is not a list (legacy loopback IP addresses)
+        if "status" in __myDataObject and __myDataObject["status"] == "success":
             # Open the csv file name
             # file contents will be overwritten.
             with open(__csvFile, 'w') as csv:
@@ -137,36 +147,70 @@ def jsonConvert2Csv(__csvFile, __jsonObject):
                 # Write the CSV headers to the file.
                 csv.write(','.join(f'"{w}"' for w in csvHeaders) + '\n')
                 # Iterate through the json object and write the output into the csv file
-                for objEgressIps in __jsonObject["result"]:
+                for objEgressIps in __myDataObject["result"]:
                     for obj in objEgressIps["address_details"]:
                         strToWrite = [objEgressIps["zone"], obj["serviceType"], obj["address"], obj["addressType"]]
                         csv.write(','.join(f'"{w}"' for w in strToWrite) + '\n')
-
         else:
             print("This is not a valid json object to convert.")
             sys.exit(1)
+    else:
+        # __myDataObject is a list (legacy loopback IP addresses)
+        with open(__csvFile, 'w') as csv:
+            # CSV Headers
+            csvHeaders = ["Type", "Location", "Loopback IP"]
+            csv.write(','.join(f'"{w}"' for w in csvHeaders) + '\n')
+
+            while len(__myDataObject) != 0:
+                dataItem = __myDataObject.pop()
+                print(dataItem)
+                if "status" in dataItem and dataItem["status"] == "success":
+                    # Iterate through the json object and write the output to csv file.
+                    for loopbackItem in dataItem["result"]["addrList"]:
+                        locationInfo = loopbackItem.split(":")
+                        strToWrite = [dataItem["result"]["fwType"], locationInfo[0], locationInfo[1]]
+                        print(strToWrite)
+                        csv.write(','.join(f'"{w}"' for w in strToWrite) + '\n')
 
 
 def printJsonObject(__jsonObject):
     """Output the Json object in a tabulated format to stdout"""
     # Print Headers
-    tableString = '{: <20}{: <18}{: <18}{: <18}'
-    print(tableString.format("Location", "serviceType", "egress IP", "Active/Reserved"))
     try:
-        if "status" in __jsonObject:
-            if __jsonObject["status"] == "success":
+        if isinstance(__jsonObject, list):
+            # Table looks a little different for loopback_ips
+            tableString = '{: <15}{: <20}{: <15}'
+
+            # Print headers
+            print(tableString.format("Type", "Location", "Loopback IP"))
+
+            # Iterate through the json object and print accordingly.
+            while len(__jsonObject) != 0:
+                jsonItem = __jsonObject.pop()
+                if "status" in jsonItem and jsonItem["status"] != "error":
+                    for item in jsonItem["result"]["addrList"]:
+                        locationInfo = item.split(":")
+                        print(tableString.format(jsonItem["result"]["fwType"], locationInfo[0], locationInfo[1]))
+        else: 
+            if "status" in __jsonObject and \
+                __jsonObject["status"] == "success" and \
+                    __jsonObject["result"]["addrListType"] not in "loopback_ip":
+
+                # Set the table string format.
+                tableString = '{: <20}{: <18}{: <18}{: <18}'
+                print(tableString.format("Location", "serviceType", "egress IP", "Active/Reserved"))
+
                 # Iterate through the json object and print accordingly.
                 for objEgressIps in __jsonObject["result"]:
                     for obj in objEgressIps["address_details"]:
                         print(tableString.format(objEgressIps["zone"], obj["serviceType"], obj["address"], obj["addressType"]))
             else:
-                print(__jsonObject["result"])
+                print(__jsonObject)
                 sys.exit(1)
-        else:
-            print(__jsonObject)
 
     except TypeError:
         print("Are you sure this is the right JSON object?")
+        print(__jsonObject)
         sys.exit(1)
 
 
@@ -188,11 +232,22 @@ def getJsonObjectFromUrl(__jsonurl, __uriheaders, __uribody):
     requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
     try:
-        # Json POST request
-        __jsonRequest = requests.post(__jsonurl, headers=__uriheaders, data=json.dumps(__uribody), verify=False)
+        
+        if not args.allLoopbackIPAddresses:
+            # Json POST request
+            __jsonRequest = requests.post(__jsonurl, headers=__uriheaders, data=json.dumps(__uribody), verify=False)
 
-        # Convert result into a JSON object
-        __jsonObject = json.loads(__jsonRequest.text)
+            # Convert result into a JSON object
+            __jsonObject = json.loads(__jsonRequest.text)
+        else: 
+            __legacyPrismaAccessURI = __jsonurl + f'fwType={__uribody}&addrType={addressType}'
+
+            # Json GET request
+            __jsonRequest = requests.get(__legacyPrismaAccessURI, headers=__uriheaders, verify=False)
+
+            # Convert result into a JSON object
+            __jsonObject = json.loads(__jsonRequest.text)
+
         return __jsonObject
 
     except requests.exceptions.Timeout:
@@ -215,16 +270,16 @@ def outputJsonFile(__jsonFileName, __jsonObject):
         jsonFile.write(json.dumps(__jsonObject))
 
 
-def checkArgsJsonCsv(__jsonObject):
+def checkArgsJsonCsv(__dataObject):
     """Check to see if the outputCsvFile is defined."""
     if args.outputCsvFile:
         # Convert the Json object into CSV format.
-        jsonConvert2Csv(args.outputCsvFile, __jsonObject)
+        jsonConvert2Csv(args.outputCsvFile, __dataObject)
         sys.exit(0)
 
     if args.outputJsonFile:
         # Write the Json object into json file.
-        outputJsonFile(args.outputJsonFile, __jsonObject)
+        outputJsonFile(args.outputJsonFile, __dataObject)
         sys.exit(0)
 
 
@@ -312,6 +367,26 @@ def showExplicitProxyAddresses(__getPrismaAccessURI, __PrismaAccessHeaders):
     printJsonObject(__ExplicitProxyAddresses)
 
 
+def showLoopbackIPAddresses(__getPrismaAccessURI, __PrismaAccessHeaders):
+    """Shows all the loopback IP addresses of the tenant."""
+    fwTypes = ['gpcs_gp_gw', 'gpcs_gp_portal', 'gpcs_remote_network', 'gpcs_clean_pipe']
+    uriBody = ""
+
+    loopbackItems = []
+
+    for item in fwTypes:
+        uriBody = item
+        __LoopbackIPAddresses = getJsonObjectFromUrl(__getPrismaAccessURI,
+                                                     __PrismaAccessHeaders,
+                                                     uriBody)
+        loopbackItems.append(__LoopbackIPAddresses)
+
+    checkArgsJsonCsv(loopbackItems)
+
+    # Only reaches this stage if the outputJsonFile or outputCsvFile is not defined.
+    printJsonObject(loopbackItems)
+
+
 def argsMobileUsers(__getPrismaAccessURI, __PrismaAccessHeaders):
     """Parse through Mobile user arguments"""
     if args.allActiveMobileUserAddresses:
@@ -348,6 +423,13 @@ def argsExplicitProxy(__getPrismaAccessURI, __PrismaAccessHeaders):
         sys.exit(0)
 
 
+def argsLoopbackIPAddresses(__getPrismaAccessURI, __PrismaAccessHeaders):
+    """Checks to see if the --allLoopbackIPAddresses argument is set."""
+    if args.allLoopbackIPAddresses:
+        showLoopbackIPAddresses(__getPrismaAccessURI, __PrismaAccessHeaders)
+        sys.exit(0)
+
+
 def apiArguments():
     """Parse through the API arguments"""
     if args.setAPIKey:
@@ -366,6 +448,8 @@ def apiQueryArguments(__getPrismaAccessURI):
     """Check to see if the API Key file is defined."""
     API_KEY = getAPIKey()
     PrismaAccessHeaders = {"header-api-key": API_KEY}
+
+    argsLoopbackIPAddresses(__getPrismaAccessURI, PrismaAccessHeaders)
 
     if args.allEgressIPs:
         showAllEgressIps(__getPrismaAccessURI, PrismaAccessHeaders)
@@ -387,13 +471,17 @@ def main():
     # Check to see if the API arguments are defined.
     apiArguments()
 
-    if args.allEgressIPs or \
-       args.allAROnboardedMobileUserLocations or \
-       args.allActiveIPOnboardedMobileUserLocations or \
-       args.allActiveMobileUserAddresses or \
-       args.allRemoteNetworkAddresses or \
-       args.allCleanPipeAddresses or \
-       args.allExplicitProxyAddresses:
+    if args.allLoopbackIPAddresses:
+        legacyPrismaAccessURI = f'https://api.{args.environment}.datapath.prismaaccess.com/getAddrList/latest?'
+        apiQueryArguments(legacyPrismaAccessURI)
+
+    if (args.allEgressIPs or
+       args.allAROnboardedMobileUserLocations or
+       args.allActiveIPOnboardedMobileUserLocations or
+       args.allActiveMobileUserAddresses or
+       args.allRemoteNetworkAddresses or
+       args.allCleanPipeAddresses or
+       args.allExplicitProxyAddresses) and not args.allLoopbackIPAddresses:
         apiQueryArguments(getPrismaAccessURI)
 
     if args.fileName:

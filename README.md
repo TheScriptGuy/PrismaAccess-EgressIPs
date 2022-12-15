@@ -24,12 +24,11 @@ The logic is such that it follows this order:
 
 ```bash
 $ python3 format-egress-ips.py
-usage: format-egress-ips.py [-h] [--fileName FILENAME] [--setAPIKey SETAPIKEY] [--showAPIKey] [--deleteAPIKey] [--apiKey APIKEY] [--environment ENVIRONMENT]
-                            [--allEgressIPs] [--allAROnboardedMobileUserLocations] [--allActiveIPOnboardedMobileUserLocations] [--allActiveMobileUserAddresses]
-                            [--allRemoteNetworkAddresses] [--allCleanPipeAddresses] [--allExplicitProxyAddresses] [--outputJsonFile OUTPUTJSONFILE]
-                            [--outputCsvFile OUTPUTCSVFILE]
+usage: format-egress-ips.py [-h] [--fileName FILENAME] [--setAPIKey SETAPIKEY] [--showAPIKey] [--deleteAPIKey] [--apiKey APIKEY] [--environment ENVIRONMENT] [--allEgressIPs]
+                            [--allAROnboardedMobileUserLocations] [--allActiveIPOnboardedMobileUserLocations] [--allActiveMobileUserAddresses] [--allRemoteNetworkAddresses]
+                            [--allCleanPipeAddresses] [--allExplicitProxyAddresses] [--allLoopbackIPAddresses] [--outputJsonFile OUTPUTJSONFILE] [--outputCsvFile OUTPUTCSVFILE]
 
-Format Egress IPs 0.09
+Format Egress IPs 0.10
 
 options:
   -h, --help            show this help message and exit
@@ -54,6 +53,8 @@ options:
                         Shows all Clean Pipe Addresses
   --allExplicitProxyAddresses
                         Shows all Clean Pipe Addresses
+  --allLoopbackIPAddresses
+                        Retrieves all the loopback addresses for each location.
   --outputJsonFile OUTPUTJSONFILE
                         Send json output to file.
   --outputCsvFile OUTPUTCSVFILE
