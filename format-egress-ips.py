@@ -193,7 +193,7 @@ def printJsonObject(__jsonObject):
         else: 
             if "status" in __jsonObject and \
                 __jsonObject["status"] == "success" and \
-                __jsonObject["result"]["addrListType"] not in "loopback_ip":
+                    __jsonObject["result"]["addrListType"] not in "loopback_ip":
 
                 # Set the table string format.
                 tableString = '{: <20}{: <18}{: <18}{: <18}'
