@@ -38,6 +38,7 @@ ExplicitProxyAddresses = {"serviceType": "swg_proxy", "location": "deployed", "a
 # Loopback IP
 addressType = "loopback_ip"
 
+
 def parseArguments():
     """Create argument options and parse through them to determine what to do with script."""
     # Instantiate the parser
@@ -130,11 +131,11 @@ def getAPIKey():
 
 
 def jsonConvert2Csv(__csvFile, __dataObject):
+    """Convert Json object to into csv file format."""
 
     __myDataObject = __dataObject
 
-    """Convert Json object to into csv file format."""
-    if not isinstance(__myDataObject,list):
+    if not isinstance(__myDataObject, list):
         # __dataObject is not a list (legacy loopback IP addresses)
         if "status" in __myDataObject and __myDataObject["status"] == "success":
             # Open the csv file name
@@ -167,7 +168,7 @@ def jsonConvert2Csv(__csvFile, __dataObject):
                     # Iterate through the json object and write the output to csv file.
                     for loopbackItem in dataItem["result"]["addrList"]:
                         locationInfo = loopbackItem.split(":")
-                        strToWrite = [ dataItem["result"]["fwType"], locationInfo[0], locationInfo[1] ]
+                        strToWrite = [dataItem["result"]["fwType"], locationInfo[0], locationInfo[1]]
                         print(strToWrite)
                         csv.write(','.join(f'"{w}"' for w in strToWrite) + '\n')
 
@@ -179,7 +180,7 @@ def printJsonObject(__jsonObject):
         if isinstance(__jsonObject, list):
             # Table looks a little different for loopback_ips
             tableString = '{: <15}{: <20}{: <15}'
-            
+
             # Print headers
             print(tableString.format("Type", "Location", "Loopback IP"))
 
@@ -189,7 +190,7 @@ def printJsonObject(__jsonObject):
                 if "status" in jsonItem and jsonItem["status"] != "error":
                     for item in jsonItem["result"]["addrList"]:
                         locationInfo = item.split(":")
-                        print(tableString.format(jsonItem["result"]["fwType"],locationInfo[0], locationInfo[1]))
+                        print(tableString.format(jsonItem["result"]["fwType"], locationInfo[0], locationInfo[1]))
         else: 
             if "status" in __jsonObject and \
                 __jsonObject["status"] == "success" and \
@@ -198,7 +199,7 @@ def printJsonObject(__jsonObject):
                 # Set the table string format.
                 tableString = '{: <20}{: <18}{: <18}{: <18}'
                 print(tableString.format("Location", "serviceType", "egress IP", "Active/Reserved"))
-                
+
                 # Iterate through the json object and print accordingly.
                 for objEgressIps in __jsonObject["result"]:
                     for obj in objEgressIps["address_details"]:
@@ -365,7 +366,9 @@ def showExplicitProxyAddresses(__getPrismaAccessURI, __PrismaAccessHeaders):
     # Only reaches this stage if the outputJsonFile or outputCsvFile is not defined.
     printJsonObject(__ExplicitProxyAddresses)
 
+
 def showLoopbackIPAddresses(__getPrismaAccessURI, __PrismaAccessHeaders):
+    """Shows all the loopback IP addresses of the tenant."""
     fwTypes = ['gpcs_gp_gw', 'gpcs_gp_portal', 'gpcs_remote_network', 'gpcs_clean_pipe']
     uriBody = ""
 
@@ -421,6 +424,7 @@ def argsExplicitProxy(__getPrismaAccessURI, __PrismaAccessHeaders):
 
 
 def argsLoopbackIPAddresses(__getPrismaAccessURI, __PrismaAccessHeaders):
+    """Checks to see if the --allLoopbackIPAddresses argument is set."""
     if args.allLoopbackIPAddresses:
         showLoopbackIPAddresses(__getPrismaAccessURI, __PrismaAccessHeaders)
         sys.exit(0)
@@ -455,7 +459,7 @@ def apiQueryArguments(__getPrismaAccessURI):
     argsRemoteNetworks(__getPrismaAccessURI, PrismaAccessHeaders)
     argsCleanPipe(__getPrismaAccessURI, PrismaAccessHeaders)
     argsExplicitProxy(__getPrismaAccessURI, PrismaAccessHeaders)
-    
+
 
 def main():
     """Parse all the arguments for the script"""
@@ -471,13 +475,13 @@ def main():
         legacyPrismaAccessURI = f'https://api.{args.environment}.datapath.prismaaccess.com/getAddrList/latest?'
         apiQueryArguments(legacyPrismaAccessURI)
 
-    if (args.allEgressIPs or \
-       args.allAROnboardedMobileUserLocations or \
-       args.allActiveIPOnboardedMobileUserLocations or \
-       args.allActiveMobileUserAddresses or \
-       args.allRemoteNetworkAddresses or \
-       args.allCleanPipeAddresses or \
-       args.allExplicitProxyAddresses) and not (args.allLoopbackIPAddresses):
+    if (args.allEgressIPs or
+       args.allAROnboardedMobileUserLocations or
+       args.allActiveIPOnboardedMobileUserLocations or
+       args.allActiveMobileUserAddresses or
+       args.allRemoteNetworkAddresses or
+       args.allCleanPipeAddresses or
+       args.allExplicitProxyAddresses) and not args.allLoopbackIPAddresses:
         apiQueryArguments(getPrismaAccessURI)
 
     if args.fileName:
