@@ -1,5 +1,5 @@
 # PrismaAccess-EgressIPs
-Provide the egress IPs for the Prisma Access service in a formatted context.
+Provide the egress/loopback IPs for the Prisma Access service in a formatted context.
 
 # Dependencies
 Make sure that you have python's `requests` module installed
