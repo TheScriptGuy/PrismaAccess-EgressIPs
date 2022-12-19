@@ -111,6 +111,20 @@ Vietnam               gp_gateway          191.199.280.100     active
 US Central            gp_gateway          103.191.878.100     active
 ```
 
+# Getting loopback IP addresses for your tenant
+This assumes you have the API key already set. Use the `--apiKey` argument to pass the API key via stdin.
+```bash
+$ python3 format-egress-ips.py --allLoopbackIPAddresses
+Type           Location            Loopback IP
+gpcs_gp_portal US West             10.91.0.12
+gpcs_gp_portal US East             10.91.0.7
+gpcs_gp_gw     US Southwest        10.91.0.13
+gpcs_gp_gw     US Central          10.91.0.4
+gpcs_gp_gw     US East             10.91.0.8
+gpcs_gp_gw     US Southeast        10.91.0.3
+gpcs_gp_gw     US Northwest        10.91.0.6
+```
+
 ## Convert egress IPs into comma separated values (csv) format
 No output is displayed, but a file is created based on the argument supplied through --outputCsvFile
 ```bash
