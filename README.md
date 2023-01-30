@@ -16,19 +16,20 @@ The logic is such that it follows this order:
 - No API key, exit script. 
 - API key exists, then attempt to get the egress IPs based based on argument supplied. 
 3. If egress IPs are returned from the API, then display them in tabulated format to stdout. Exit script.
-4. If egress IPs are returned from the API, and the `--outputJsonFile` **or** `--outputCsvFile` argument is specified, then send the resulting output to those files in the appropriate format. Exit script.
+4. If egress IPs are returned from the API, and the `--outputJsonFile` **or** `--outputCsvFile` **or** `--outputEdlFile` argument is specified, then send the resulting output to those files in the appropriate format. Exit script.
 5. For these 2 options below, the API key does not need to be set.
 6. If the `--fileName` argument is used, then display the output to stdout in tabulated format.
 7. If the `--fileName` arguement and the `--outputCsvFile` arguments are used in tandem, then the json formatted file is converted to comma separated values.
 
 
 ```bash
-$ python3 format-egress-ips.py
-usage: format-egress-ips.py [-h] [--fileName FILENAME] [--setAPIKey SETAPIKEY] [--showAPIKey] [--deleteAPIKey] [--apiKey APIKEY] [--environment ENVIRONMENT] [--allEgressIPs]
-                            [--allAROnboardedMobileUserLocations] [--allActiveIPOnboardedMobileUserLocations] [--allActiveMobileUserAddresses] [--allRemoteNetworkAddresses]
-                            [--allCleanPipeAddresses] [--allExplicitProxyAddresses] [--allLoopbackIPAddresses] [--outputJsonFile OUTPUTJSONFILE] [--outputCsvFile OUTPUTCSVFILE]
+usage: format-egress-ips.py [-h] [--fileName FILENAME] [--setAPIKey SETAPIKEY] [--showAPIKey] [--deleteAPIKey] [--apiKey APIKEY]
+                            [--environment ENVIRONMENT] [--allEgressIPs] [--allAROnboardedMobileUserLocations]
+                            [--allActiveIPOnboardedMobileUserLocations] [--allActiveMobileUserAddresses] [--allRemoteNetworkAddresses]
+                            [--allCleanPipeAddresses] [--allExplicitProxyAddresses] [--allLoopbackIPAddresses] [--outputJsonFile OUTPUTJSONFILE]
+                            [--outputCsvFile OUTPUTCSVFILE] [--outputEdlFile OUTPUTEDLFILE]
 
-Format Egress IPs 0.10
+Format Egress IPs 0.11
 
 options:
   -h, --help            show this help message and exit
@@ -59,6 +60,8 @@ options:
                         Send json output to file.
   --outputCsvFile OUTPUTCSVFILE
                         Convert json output into comma separated values file.
+  --outputEdlFile OUTPUTEDLFILE
+                        Convert json into external dynamic list file.
 ```
 
 # API Keys
@@ -135,6 +138,10 @@ Similarly as above, if you haven't defined an API key by using the `--setAPIKey`
 $ python3 format-egress-ips.py --apiKey aldkfjlaksji4u50198u09uef-a9udfb9ausdf --allEgressIPs --outputCsvFile output.csv
 ```
 
+## To output into a simple External Dynamic List format (every IP address only)
+```bash
+$ python3 format-egress-ips.py --apiKey aldkfjlaksji4u50198u09uef-a9udfb9ausdf --allEgressIPs --outputEdlFile output.edl
+```
 
 ## Convert an existing json file into a formatted table
 ```bash
@@ -154,3 +161,5 @@ US Central            gp_gateway          103.191.878.100     active
 ```bash
 $ python3 format-egress-ips.py --fileName egress-ips.json --outputCsvFile output.csv
 ```
+
+

@@ -1,7 +1,7 @@
 # Formats the json output to get all the egress IPs
 # Author:          TheScriptGuy
-# Last modified:   2022-12-14
-# Version:         0.10
+# Last modified:   2023-01-30
+# Version:         0.11
 # Changelog:
 #   Added some better error handling in case a json object is not returned.
 
@@ -14,7 +14,7 @@ import requests
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
 
-scriptVersion = "0.10"
+scriptVersion = "0.11"
 
 API_KEY_FILE = 'prisma-access-api.key'
 
@@ -93,6 +93,9 @@ def parseArguments():
 
     parser.add_argument('--outputCsvFile', default='',
                         help='Convert json output into comma separated values file.')
+
+    parser.add_argument('--outputEdlFile', default='',
+                        help='Convert json into external dynamic list file.')
 
     global args
     args = parser.parse_args()
@@ -270,7 +273,46 @@ def outputJsonFile(__jsonFileName, __jsonObject):
         jsonFile.write(json.dumps(__jsonObject))
 
 
-def checkArgsJsonCsv(__dataObject):
+def outputEdlFile(__edlFileName, __jsonObject):
+    """Write the IP addresses from the jsonObject into the __edlFileName"""
+
+    # Create the ipEdl list
+    ipEdl = []
+
+    # First iterate through __jsonObject to find IP addresses
+    try:
+        if isinstance(__jsonObject, list):
+            # Table looks a little different for loopback_ips
+            # Iterate through the json object and append IP address to ipEdl.
+            while len(__jsonObject) != 0:
+                jsonItem = __jsonObject.pop()
+                if "status" in jsonItem and jsonItem["status"] != "error":
+                    for item in jsonItem["result"]["addrList"]:
+                        locationInfo = item.split(":")
+                        ipEdl.append(locationInfo[1])
+        else: 
+            if "status" in __jsonObject and \
+                __jsonObject["status"] == "success":
+
+                # Iterate through the json object and append IP address to ipEdl.
+                for objEgressIps in __jsonObject["result"]:
+                    for obj in objEgressIps["address_details"]:
+                        ipEdl.append(obj["address"])
+            else:
+                print(__jsonObject)
+                sys.exit(1)
+
+    except TypeError:
+        print("Are you sure this is the right JSON object?")
+        print(__jsonObject)
+        sys.exit(1)
+
+    # Write contents of ipEdl to __edlFileName
+    with open(__edlFileName, 'w') as edlFile:
+        edlFile.write('\n'.join(ipEdl))
+
+
+def checkArgsJsonCsvEdl(__dataObject):
     """Check to see if the outputCsvFile is defined."""
     if args.outputCsvFile:
         # Convert the Json object into CSV format.
@@ -282,6 +324,11 @@ def checkArgsJsonCsv(__dataObject):
         outputJsonFile(args.outputJsonFile, __dataObject)
         sys.exit(0)
 
+    if args.outputEdlFile:
+        # Write the IP addresses into the edl file.
+        outputEdlFile(args.outputEdlFile, __dataObject)
+        sys.exit(0)
+
 
 def showAllEgressIps(__getPrismaAccessURI, __PrismaAccessHeaders):
     """Shows all egress IPs used in the Prisma Access Service."""
@@ -289,7 +336,7 @@ def showAllEgressIps(__getPrismaAccessURI, __PrismaAccessHeaders):
                                           __PrismaAccessHeaders,
                                           EgressIPs)
 
-    checkArgsJsonCsv(__AllEgressIps)
+    checkArgsJsonCsvEdl(__AllEgressIps)
 
     # Only reaches this stage if the outputJsonFile or outputCsvFile is not defined.
     printJsonObject(__AllEgressIps)
@@ -301,7 +348,7 @@ def showAllActiveMobileUserAddresses(__getPrismaAccessURI, __PrismaAccessHeaders
                                                           __PrismaAccessHeaders,
                                                           ActiveMobileUserAddresses)
 
-    checkArgsJsonCsv(__AllActiveMobileUserAddresses)
+    checkArgsJsonCsvEdl(__AllActiveMobileUserAddresses)
 
     # Only reaches this stage if the outputJsonFile or outputCsvFile is not defined.
     printJsonObject(__AllActiveMobileUserAddresses)
@@ -313,7 +360,7 @@ def showAllActiveReservedOnboardedMobileUserLocations(__getPrismaAccessURI, __Pr
                                                                            __PrismaAccessHeaders,
                                                                            ActiveReservedOnboardedMobileUserLocations)
 
-    checkArgsJsonCsv(__AllActiveReservedOnboardedMobileUserLocations)
+    checkArgsJsonCsvEdl(__AllActiveReservedOnboardedMobileUserLocations)
 
     # Only reaches this stage if the outputJsonFile or outputCsvFile is not defined.
     printJsonObject(__AllActiveReservedOnboardedMobileUserLocations)
@@ -325,7 +372,7 @@ def showActiveIPOnboardedMobileUserLocations(__getPrismaAccessURI, __PrismaAcces
                                                                   __PrismaAccessHeaders,
                                                                   ActiveIPOnboardedMobileUserLocations)
 
-    checkArgsJsonCsv(__ActiveIPOnboardedMobileUserLocations)
+    checkArgsJsonCsvEdl(__ActiveIPOnboardedMobileUserLocations)
 
     # Only reaches this stage if the outputJsonFile or outputCsvFile is not defined.
     printJsonObject(__ActiveIPOnboardedMobileUserLocations)
@@ -337,7 +384,7 @@ def showRemoteNetworkAddresses(__getPrismaAccessURI, __PrismaAccessHeaders):
                                                     __PrismaAccessHeaders,
                                                     RemoteNetworkAddresses)
 
-    checkArgsJsonCsv(__RemoteNetworkAddresses)
+    checkArgsJsonCsvEdl(__RemoteNetworkAddresses)
 
     # Only reaches this stage if the outputJsonFile or outputCsvFile is not defined.
     printJsonObject(__RemoteNetworkAddresses)
@@ -349,7 +396,7 @@ def showCleanPipeAddresses(__getPrismaAccessURI, __PrismaAccessHeaders):
                                                 __PrismaAccessHeaders,
                                                 CleanPipeAddresses)
 
-    checkArgsJsonCsv(__CleanPipeAddresses)
+    checkArgsJsonCsvEdl(__CleanPipeAddresses)
 
     # Only reaches this stage if the outputJsonFile or outputCsvFile is not defined.
     printJsonObject(__CleanPipeAddresses)
@@ -361,7 +408,7 @@ def showExplicitProxyAddresses(__getPrismaAccessURI, __PrismaAccessHeaders):
                                                     __PrismaAccessHeaders,
                                                     ExplicitProxyAddresses)
 
-    checkArgsJsonCsv(__ExplicitProxyAddresses)
+    checkArgsJsonCsvEdl(__ExplicitProxyAddresses)
 
     # Only reaches this stage if the outputJsonFile or outputCsvFile is not defined.
     printJsonObject(__ExplicitProxyAddresses)
@@ -381,7 +428,7 @@ def showLoopbackIPAddresses(__getPrismaAccessURI, __PrismaAccessHeaders):
                                                      uriBody)
         loopbackItems.append(__LoopbackIPAddresses)
 
-    checkArgsJsonCsv(loopbackItems)
+    checkArgsJsonCsvEdl(loopbackItems)
 
     # Only reaches this stage if the outputJsonFile or outputCsvFile is not defined.
     printJsonObject(loopbackItems)
