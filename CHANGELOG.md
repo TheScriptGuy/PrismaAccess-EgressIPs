@@ -1,4 +1,7 @@
 # PrismaAccess-Egress IPs Changelog
+## 2023-01-30 - 0.12
+* Found the pesky stdout formatting [bug](https://github.com/TheScriptGuy/PrismaAccess-EgressIPs/issues/4) and squashed it.
+
 ## 2023-01-30 - 0.11
 ## New feature
 * added `--outputEdlFile` argument to send IP's only directly to file.

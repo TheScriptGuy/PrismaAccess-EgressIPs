@@ -1,7 +1,7 @@
 # Formats the json output to get all the egress IPs
 # Author:          TheScriptGuy
 # Last modified:   2023-01-30
-# Version:         0.11
+# Version:         0.12
 # Changelog:
 #   Added some better error handling in case a json object is not returned.
 
@@ -14,7 +14,7 @@ import requests
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
 
-scriptVersion = "0.11"
+scriptVersion = "0.12"
 
 API_KEY_FILE = 'prisma-access-api.key'
 
@@ -178,7 +178,6 @@ def jsonConvert2Csv(__csvFile, __dataObject):
 
 def printJsonObject(__jsonObject):
     """Output the Json object in a tabulated format to stdout"""
-    # Print Headers
     try:
         if isinstance(__jsonObject, list):
             # Table looks a little different for loopback_ips
@@ -195,10 +194,7 @@ def printJsonObject(__jsonObject):
                         locationInfo = item.split(":")
                         print(tableString.format(jsonItem["result"]["fwType"], locationInfo[0], locationInfo[1]))
         else: 
-            if "status" in __jsonObject and \
-                __jsonObject["status"] == "success" and \
-                    __jsonObject["result"]["addrListType"] not in "loopback_ip":
-
+            if "status" in __jsonObject and __jsonObject["status"] != "error":
                 # Set the table string format.
                 tableString = '{: <20}{: <18}{: <18}{: <18}'
                 print(tableString.format("Location", "serviceType", "egress IP", "Active/Reserved"))
@@ -208,7 +204,7 @@ def printJsonObject(__jsonObject):
                     for obj in objEgressIps["address_details"]:
                         print(tableString.format(objEgressIps["zone"], obj["serviceType"], obj["address"], obj["addressType"]))
             else:
-                print(__jsonObject)
+                print(__jsonObject["result"])
                 sys.exit(1)
 
     except TypeError:

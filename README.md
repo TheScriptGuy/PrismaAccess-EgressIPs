@@ -29,7 +29,7 @@ usage: format-egress-ips.py [-h] [--fileName FILENAME] [--setAPIKey SETAPIKEY] [
                             [--allCleanPipeAddresses] [--allExplicitProxyAddresses] [--allLoopbackIPAddresses] [--outputJsonFile OUTPUTJSONFILE]
                             [--outputCsvFile OUTPUTCSVFILE] [--outputEdlFile OUTPUTEDLFILE]
 
-Format Egress IPs 0.11
+Format Egress IPs 0.12
 
 options:
   -h, --help            show this help message and exit
