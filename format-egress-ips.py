@@ -275,7 +275,6 @@ def outputJsonFile(__jsonFileName, __jsonObject):
 
 def outputEdlFile(__edlFileName, __jsonObject):
     """Write the IP addresses from the jsonObject into the __edlFileName"""
-
     # Create the ipEdl list
     ipEdl = []
 
@@ -290,9 +289,9 @@ def outputEdlFile(__edlFileName, __jsonObject):
                     for item in jsonItem["result"]["addrList"]:
                         locationInfo = item.split(":")
                         ipEdl.append(locationInfo[1])
-        else: 
+        else:
             if "status" in __jsonObject and \
-                __jsonObject["status"] == "success":
+                    __jsonObject["status"] == "success":
 
                 # Iterate through the json object and append IP address to ipEdl.
                 for objEgressIps in __jsonObject["result"]:
