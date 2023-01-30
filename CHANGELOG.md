@@ -1,4 +1,8 @@
 # PrismaAccess-Egress IPs Changelog
+## 2023-01-30 - 0.11
+## New feature
+* added `--outputEdlFile` argument to send IP's only directly to file.
+
 ## 2022-12-14 - 0.10
 ## New feature
 * added `--allLoopbackIPAddresses` to show the loopback IP addresses of your environment.
