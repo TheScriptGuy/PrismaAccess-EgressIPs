@@ -1,4 +1,7 @@
 # PrismaAccess-Egress IPs Changelog
+## 2023-04-20 - 0.13
+* Added better handling for [unauthorized messages](https://github.com/TheScriptGuy/PrismaAccess-EgressIPs/issues/7) from API.
+
 ## 2023-01-30 - 0.12
 * Found the pesky stdout formatting [bug](https://github.com/TheScriptGuy/PrismaAccess-EgressIPs/issues/4) and squashed it.
 

@@ -1,7 +1,7 @@
 # Formats the json output to get all the egress IPs
 # Author:          TheScriptGuy
-# Last modified:   2023-01-30
-# Version:         0.12
+# Last modified:   2023-04-20
+# Version:         0.13
 # Changelog:
 #   Added some better error handling in case a json object is not returned.
 
@@ -14,7 +14,7 @@ import requests
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
 
-scriptVersion = "0.12"
+scriptVersion = "0.13"
 
 API_KEY_FILE = 'prisma-access-api.key'
 
@@ -180,6 +180,10 @@ def printJsonObject(__jsonObject):
     """Output the Json object in a tabulated format to stdout"""
     try:
         if isinstance(__jsonObject, list):
+            if "message" in __jsonObject[0] and __jsonObject[0]["message"] == "Unauthorized":
+                print("Unauthorized API usage. Using wrong environment or API key perhaps?")
+                sys.exit(1)
+
             # Table looks a little different for loopback_ips
             tableString = '{: <15}{: <20}{: <15}'
 
@@ -193,7 +197,7 @@ def printJsonObject(__jsonObject):
                     for item in jsonItem["result"]["addrList"]:
                         locationInfo = item.split(":")
                         print(tableString.format(jsonItem["result"]["fwType"], locationInfo[0], locationInfo[1]))
-        else: 
+        else:
             if "status" in __jsonObject and __jsonObject["status"] != "error":
                 # Set the table string format.
                 tableString = '{: <20}{: <18}{: <18}{: <18}'
@@ -204,8 +208,10 @@ def printJsonObject(__jsonObject):
                     for obj in objEgressIps["address_details"]:
                         print(tableString.format(objEgressIps["zone"], obj["serviceType"], obj["address"], obj["addressType"]))
             else:
-                print(__jsonObject["result"])
-                sys.exit(1)
+                # First check to see if the __jsonObject has an unauthorized message.
+                if "message" in __jsonObject and __jsonObject["message"] == "Unauthorized":
+                    print("Unauthorized API usage. Using wrong environment or API key perhaps?")
+                    sys.exit(1)
 
     except TypeError:
         print("Are you sure this is the right JSON object?")
@@ -231,7 +237,6 @@ def getJsonObjectFromUrl(__jsonurl, __uriheaders, __uribody):
     requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
     try:
-        
         if not args.allLoopbackIPAddresses:
             # Json POST request
             __jsonRequest = requests.post(__jsonurl, headers=__uriheaders, data=json.dumps(__uribody), verify=False)
