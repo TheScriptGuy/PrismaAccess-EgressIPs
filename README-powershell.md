@@ -43,5 +43,3 @@ US East           gpcs_gp_portal      192.168.0.11
 US West           gpcs_gp_portal      192.168.0.2
 CloudGenix_Branch gpcs_remote_network 192.168.0.3
 ```
-
-s
