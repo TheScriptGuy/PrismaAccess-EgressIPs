@@ -43,3 +43,23 @@ US East           gpcs_gp_portal      192.168.0.11
 US West           gpcs_gp_portal      192.168.0.2
 CloudGenix_Branch gpcs_remote_network 192.168.0.3
 ```
+
+## Output to csv file
+```powershell
+PS1 C:\>.\format-egress-ips.ps1 -api_key <api_key> -dataType loopback_ip -outputFile loopback.csv
+PS1 C:\>
+```
+
+## Output to json file
+```powershell
+PS1 C:\>.\format-egress-ips.ps1 -api_key <api_key> -dataType loopback_ip -outputFile loopback.json
+PS1 C:\>
+
+```
+
+## Output only IP addresses
+```powershell
+PS1 C:\>.\format-egress-ips.ps1 -api_key <api_key> -dataType loopback_ip -outputFile loopback.txt
+PS1 C:\>
+
+```
