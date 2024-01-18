@@ -1,4 +1,7 @@
 # PrismaAccess-Egress IPs Changelog
+## 2024-01-17
+* Added Windows powershell script to get public egress IPs. Powershell usage available [here](https://github.com/TheScriptGuy/PrismaAccess-EgressIPs/blob/main/README-powershell.md)
+
 ## 2023-04-20 - 0.13
 * Added better handling for [unauthorized messages](https://github.com/TheScriptGuy/PrismaAccess-EgressIPs/issues/7) from API.
 
@@ -15,7 +18,7 @@
 
 ## 2022-09-23 - 0.09
 ## New feature
-* Added `--apiKey` argument to allow the API key to be passed via stdin. See [README.md](https://github.com/TheScriptGuy/PrismaAccess-EgressIPs/blob/main/README.md) for usage.
+* Added `--apiKey` argument to allow the API key to be passed via stdin. See [README.md](https://github.com/TheScriptGuy/PrismaAccess-EgressIPs/blob/main/README-python.md) for usage.
 
 ## 2022-04-28 - 0.08
 ## Fixes
