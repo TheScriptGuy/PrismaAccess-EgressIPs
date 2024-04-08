@@ -10,4 +10,4 @@ Details on how to use the Powershell script [here](https://github.com/TheScriptG
 ## Python Script Help
 For the Python fans out there, I've created a `format-egress-ips.py` to help get the IPs for your Prisma Access tenant.
 
-Details on how to use the Powershell script [here](https://github.com/TheScriptGuy/PrismaAccess-EgressIPs/blob/main/README-python.md)
+Details on how to use the Python script [here](https://github.com/TheScriptGuy/PrismaAccess-EgressIPs/blob/main/README-python.md)
