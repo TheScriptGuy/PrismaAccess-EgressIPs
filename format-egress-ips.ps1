@@ -157,8 +157,8 @@ if ($dataType -eq "loopback_ip") {
                             AddressType = $detail.addressType
                         }
                     }
-                $csvOutput | Export-Csv -Path $outputFile -NoTypeInformation
                 }
+                $csvOutput | Export-Csv -Path $outputFile -NoTypeInformation
             }
             ".txt"  { 
                 $txtOutput = $resultData | ForEach-Object {
