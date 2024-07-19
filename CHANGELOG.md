@@ -1,4 +1,7 @@
 # PrismaAccess-Egress IPs Changelog
+## 2024-07-19 - 0.15
+* Fixed a powershell [bug](https://github.com/TheScriptGuy/PrismaAccess-EgressIPs/issues/10) as identified by [sm-palo](https://github.com/sm-palo)
+
 ## 2024-01-17
 * Added Windows powershell script to get public egress IPs. Powershell usage available [here](https://github.com/TheScriptGuy/PrismaAccess-EgressIPs/blob/main/README-powershell.md)
 
