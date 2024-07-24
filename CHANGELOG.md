@@ -1,4 +1,7 @@
 # PrismaAccess-Egress IPs Changelog
+## 2024-07-24 - 0.16
+* Added capabilities to powershell script to ask for API key and prod environment if they are not set from the command line arguments.
+
 ## 2024-07-19 - 0.15
 * Fixed a powershell [bug](https://github.com/TheScriptGuy/PrismaAccess-EgressIPs/issues/10) as identified by [sm-palo](https://github.com/sm-palo)
 

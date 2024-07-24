@@ -3,7 +3,8 @@
 * `-api_key` this is the API key used to authenticate.
   - To get the API key:
     - [Panorama](https://docs.paloaltonetworks.com/prisma/prisma-access/preferred/2-2/prisma-access-panorama-admin/prisma-access-overview/retrieve-ip-addresses-for-prisma-access)
-    - [Cloud Managed](https://docs.paloaltonetworks.com/prisma/prisma-access/prisma-access-cloud-managed-admin/prisma-access-service-infrastructure/retrieve-ip-addresses-to-allow-for-prisma-access) 
+    - [Cloud Managed](https://docs.paloaltonetworks.com/prisma/prisma-access/prisma-access-cloud-managed-admin/prisma-access-service-infrastructure/retrieve-ip-addresses-to-allow-for-prisma-access)
+  - if -api_key is not passed via command-line, you will be prompted to enter an API key.
 
 ## Default Argument:
 * `-dataType EgressIPs`. This will show all the public egress IP addresses for the Prisma Access tenant.
@@ -16,13 +17,16 @@
 * `ExplicitProxyAddresses` - Shows all public egress IPs for Explicit Proxy
 
 ## Optional Argument
-* `-environment` - This defaults to prod. Adust to the correct environment where applicable.
+* `-environment` - This defaults to prod. Adjust to the correct environment where applicable. Your Account SE should be able to help determine which environment you're in.
+  - if `-environment` is not added to command-line argument, then you will be prompted to confirm the environment.
+  - if you press enter at the prompt, it will assume you meant `prod`
+
 
 # Example Usage
 ## All egress IPs for Prisma Access
 ```powershell
 PS1 C:\>.\format-egress-ips.ps1 -api_key <api_key>
-
+Environment (defaults to prod): 
 Zone              ServiceType    Address         AddressType
 ----              -----------    -------         -----------
 US Northwest      remote_network 123.264.123.112 active
@@ -35,6 +39,7 @@ US Northwest      swg_proxy      123.264.123.116 active
 ## Loopback IP addresses
 ```powershell
 PS1 C:\>.\format-egress-ips.ps1 -api_key <api_key> -dataType loopback_ip
+Environment (defaults to prod): 
 
 Location          Type                Loopback IP
 --------          ----                -----------

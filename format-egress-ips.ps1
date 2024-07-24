@@ -1,10 +1,28 @@
 param (
-    [Parameter(Mandatory=$true)]
-    [string]$api_key,
-    [string]$environment = "prod",
+    [string]$api_key = $null,
+    [string]$environment = $null,
     [string]$dataType = "EgressIPs",
     [string]$outputFile
 )
+
+# Check if api_key parameter is empty
+if ([string]::IsNullOrEmpty($api_key)) {
+    # Prompt user for api key input
+    $api_key = Read-Host "Enter API Key"
+    if ([string]::IsNullOrWhiteSpace($api_key)) {
+        Write-Host "Please enter a valid API key."
+        exit
+    }
+}
+
+# Check if environment parameter is empty
+if ([string]::IsNullOrEmpty($environment)) {
+    # Prompt user for environment input
+    $environment = Read-Host "Environment (defaults to prod)"
+    if ([string]::IsNullOrWhiteSpace($environment)) {
+        $environment = "prod"  # Set default value if user input is empty
+    }
+}
 
 # Function to send API Request
 function Send-APIRequest($uri, $method, $body, $headers) {
@@ -175,4 +193,3 @@ if ($dataType -eq "loopback_ip") {
         Display-FormattedResult -result $resultData
     }
 }
-
